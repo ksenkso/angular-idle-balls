@@ -1,11 +1,25 @@
 import Vector, {Point2D} from './Vector';
-
+export type EnemyBallConfig = {
+  pos: Point2D,
+  fill?: string,
+  points: number,
+  onDestroy: (ball: EnemyBall) => void,
+  initialPoints?: number,
+};
 export default class EnemyBall {
 
   static radius = 18;
   public pos: Vector;
-  constructor(pos: Point2D, private fill: string, public cash: number = 20, public onDestroy: (ball: EnemyBall) => any) {
+  private points: number;
+  private fill: string;
+  private readonly onDestroy: (ball: EnemyBall) => void;
+  private readonly initialPoints: number;
+  constructor({pos, points, onDestroy, fill = 'hsl(0, 90%, 50%)', initialPoints}: EnemyBallConfig) {
     this.pos = new Vector(pos.x, pos.y);
+    this.fill = fill;
+    this.points = points;
+    this.initialPoints = initialPoints ?? points;
+    this.onDestroy = onDestroy;
   }
 
   render(ctx: CanvasRenderingContext2D): void {
@@ -23,13 +37,18 @@ export default class EnemyBall {
   }
 
   formatCash(): string {
-    return this.cash.toString();
+    return this.points.toString();
   }
 
   getDamage(damage: number): void {
-    this.cash -= damage;
-    if (this.cash <= 0) {
+    this.points -= damage;
+    this.calculateColor();
+    if (this.points <= 0) {
       this.onDestroy(this);
     }
+  }
+
+  private calculateColor(): void {
+    this.fill = `hsl(${(this.initialPoints - this.points) / this.initialPoints * 180}, 90%, 50%)`;
   }
 }

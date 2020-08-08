@@ -92,12 +92,11 @@ export class PlaygroundComponent implements AfterViewInit {
     for (let i = 0; i < 40; i++) {
       const pos = this.placeBall();
       if (pos) {
-        const ball = new EnemyBall(
-          pos,
-          '#dd380a',
-          Math.floor(this.playgroundService.pointsInEnemies.value),
-          this.onEnemyDestroy.bind(this)
-        );
+        const ball = new EnemyBall({
+            pos,
+            points: Math.floor(this.playgroundService.pointsInEnemies.value),
+            onDestroy: this.onEnemyDestroy.bind(this),
+          });
         this.enemies.push(ball);
         ball.render(this.ctx);
       } else {
