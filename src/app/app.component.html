@@ -1,8 +1,4 @@
 <div class="app">
   <app-playground></app-playground>
-  <div>{{isPaused ? 'paused' : 'playing'}}</div>
-  <div>Score: {{score}}</div>
-  <button [disabled]="!isPaused" (click)="run()">RUN</button>
-  <button [disabled]="isPaused" (click)="addBall()">ADD</button>
-  <button [disabled]="isPaused" (click)="pause()">PAUSE</button>
+  <app-controls></app-controls>
 </div>

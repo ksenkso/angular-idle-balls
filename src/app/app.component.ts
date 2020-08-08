@@ -8,26 +8,13 @@ import {PlaygroundComponent} from './playground/playground.component';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'angular-idle-balls';
+  title = 'angular-idle-balls$';
   isPaused = true;
   score = 0;
   @ViewChild(PlaygroundComponent) playground: PlaygroundComponent;
 
   constructor(private playgroundService: PlaygroundService) {
-    this.playgroundService.isPaused$.subscribe(isPaused => this.isPaused = isPaused);
-    this.playgroundService.score$.subscribe(score => this.score = score);
-    this.playgroundService.message$.subscribe(message => alert(message));
+    this.playgroundService.message$.subscribe(message => console.log(message));
   }
 
-  run(): void {
-    this.playgroundService.run();
-  }
-
-  pause(): void {
-    this.playgroundService.pause();
-  }
-
-  addBall(): void {
-    this.playground.addBall();
-  }
 }

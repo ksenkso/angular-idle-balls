@@ -6,7 +6,7 @@ export default class Ball {
   private velocity: Vector;
   public readonly damage: number;
 
-  constructor(public pos: Vector, public radius: number, private fill: string) {
+  constructor(public pos: Vector, public radius: number = 5, private fill: string = '#000000') {
     this.velocity = Vector.randomNormalized();
     this.damage = 10;
   }

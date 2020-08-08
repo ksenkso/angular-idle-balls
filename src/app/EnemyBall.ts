@@ -1,10 +1,11 @@
-import Vector from './Vector';
+import Vector, {Point2D} from './Vector';
 
 export default class EnemyBall {
 
   static radius = 18;
-
-  constructor(public pos: Vector, private fill: string, public cash: number = 20, public onDestroy: (ball: EnemyBall) => any) {
+  public pos: Vector;
+  constructor(pos: Point2D, private fill: string, public cash: number = 20, public onDestroy: (ball: EnemyBall) => any) {
+    this.pos = new Vector(pos.x, pos.y);
   }
 
   render(ctx: CanvasRenderingContext2D): void {

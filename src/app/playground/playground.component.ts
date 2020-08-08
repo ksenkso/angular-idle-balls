@@ -3,6 +3,7 @@ import Vector, {Point2D} from '../Vector';
 import EnemyBall from '../EnemyBall';
 import Ball from '../Ball';
 import {PlaygroundService} from '../playground.service';
+import {BallsService} from '../balls.service';
 
 export type RectSize = {
   width: number,
@@ -17,10 +18,23 @@ export type RectSize = {
 export class PlaygroundComponent implements AfterViewInit {
   private sizes: RectSize = null;
   private enemies: EnemyBall[] = [];
-  private balls: Ball[] = [];
   private raq: number;
 
-  constructor(private playgroundService: PlaygroundService) {
+  constructor(
+    private playgroundService: PlaygroundService,
+    private ballsService: BallsService,
+  ) {
+    this.ballsService.balls$.subscribe((balls: Ball[]) => {
+      if (!balls.length) {
+        return;
+      }
+      const pos = this.placeBall(5);
+      if (pos) {
+        balls[balls.length - 1].pos = new Vector(pos.x, pos.y);
+      } else {
+        throw new Error('NO PLACE!!!');
+      }
+    });
     this.playgroundService.isPaused$.subscribe(isPaused => {
       if (isPaused) {
         this.pause();
@@ -44,7 +58,6 @@ export class PlaygroundComponent implements AfterViewInit {
   }
 
   placeBall(r = EnemyBall.radius): Point2D {
-    console.log(EnemyBall.radius + r + 10);
     let pos;
     let tries = 0;
     do {
@@ -64,35 +77,32 @@ export class PlaygroundComponent implements AfterViewInit {
     return pos;
   }
 
+  onEnemyDestroy(ball: EnemyBall): void {
+    const index = this.enemies.findIndex(e => e === ball);
+    this.enemies.splice(index, 1);
+    if (!this.enemies.length) {
+      this.nextTick(() => {
+        this.playgroundService.nextLevel();
+        this.nextLevel();
+      });
+    }
+  }
+
   placeEnemies(): void {
     for (let i = 0; i < 40; i++) {
       const pos = this.placeBall();
       if (pos) {
-        const ball = new EnemyBall(new Vector(pos.x, pos.y), '#dd380a', 20, () => {
-          const index = this.enemies.findIndex(e => e === ball);
-          this.enemies.splice(index, 1);
-          if (!this.enemies.length) {
-            this.nextTick(() => {
-              this.playgroundService.endLevel();
-            });
-          }
-        });
+        const ball = new EnemyBall(
+          pos,
+          '#dd380a',
+          Math.floor(this.playgroundService.pointsInEnemies.value),
+          this.onEnemyDestroy.bind(this)
+        );
         this.enemies.push(ball);
         ball.render(this.ctx);
       } else {
         return;
       }
-    }
-  }
-
-  public addBall(): void {
-    const pos = this.placeBall(5);
-    if (pos) {
-      this.balls.push(new Ball(
-        new Vector(pos.x, pos.y),
-        5,
-        'black',
-      ));
     }
   }
 
@@ -109,7 +119,7 @@ export class PlaygroundComponent implements AfterViewInit {
     this.enemies.forEach(e => {
       e.render(this.ctx);
     });
-    this.balls.forEach(b => {
+    this.ballsService.balls$.value.forEach(b => {
       b.render(this.ctx);
       b.tick(this.sizes);
       if (this.enemies.some(enemy => b.collideEnemy(enemy))) {
@@ -123,4 +133,7 @@ export class PlaygroundComponent implements AfterViewInit {
     cancelAnimationFrame(this.raq);
   }
 
+  private nextLevel(): void {
+    this.placeEnemies();
+  }
 }
