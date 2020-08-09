@@ -3,14 +3,42 @@
 }
 .shop {
   padding-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
 }
 .shop__ball {
-  border: 1px solid #aaa;
+  color: #eaeaea;
+  border: 1px solid black;
   border-radius: 3px;
   margin-bottom: 12px;
   padding: 5px 7px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 145px;
+  width: 100%;
+}
+
+.shop__ball:nth-child(odd) {
+  margin-right: 10px;
+}
+.shop__ball:last-child {
+  margin-right: 0;
+}
+
+.ball__button {
+  font-size: 1.1em;
+  font-weight: bold;
+  padding: 7px 12px 7px 24px;
+  background-image: url(../../assets/buy.svg);
+  background-position: 4px 50%;
+  background-repeat: no-repeat;
+  width: 100%;
+}
+
+.ball__button_upgrade {
+  background-image: url(../../assets/upgrade.svg);
 }
 
 .shop__ball > * {
@@ -22,8 +50,4 @@
 }
 .ball__upgrade > * {
   flex: 1 1 50%;
-}
-
-.shop__ball:last-child {
-  margin-bottom: 0;
 }

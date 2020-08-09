@@ -14,7 +14,7 @@ export default class EnemyBall {
   private fill: string;
   private readonly onDestroy: (ball: EnemyBall) => void;
   private readonly initialPoints: number;
-  constructor({pos, points, onDestroy, fill = 'hsl(0, 90%, 50%)', initialPoints}: EnemyBallConfig) {
+  constructor({pos, points, onDestroy, fill = 'hsl(0, 75%, 45%)', initialPoints}: EnemyBallConfig) {
     this.pos = new Vector(pos.x, pos.y);
     this.fill = fill;
     this.points = points;
@@ -49,6 +49,6 @@ export default class EnemyBall {
   }
 
   private calculateColor(): void {
-    this.fill = `hsl(${(this.initialPoints - this.points) / this.initialPoints * 180}, 90%, 50%)`;
+    this.fill = `hsl(${(this.initialPoints - this.points) / this.initialPoints * 180}, 75%, 45%)`;
   }
 }

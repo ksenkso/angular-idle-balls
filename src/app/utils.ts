@@ -1,4 +1,7 @@
 export function formatPoints(points: number): string {
+  if (points === 0) {
+    return '0';
+  }
   const letters = ['', 'k', 'M', 'G', 'T', 'P', 'E'];
   const power = Math.floor(Math.log10(points));
   let letter: string;

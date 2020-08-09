@@ -1,1 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Tahoma, Arial, sans-serif;
+}
+* {
+  box-sizing: border-box;
+}
+.button {
+  border: 1px solid #1c1c1c;
+  border-radius: 3px;
+  text-transform: uppercase;
+  color: #000;
+  background-color: #ffb728;
+  cursor: pointer;
+}
+.button:disabled {
+  /*color: #b2b2b2;*/
+  /*background-color: #ffdd9e;*/
+  cursor: not-allowed;
+  filter: grayscale(90%);
+}
+.button:active {
+  outline: 2px solid black;
+}

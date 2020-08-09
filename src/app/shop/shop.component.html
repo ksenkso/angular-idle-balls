@@ -6,14 +6,15 @@
       <!--      <img src="/assets/balls/{{ballType.type}}" alt="{{ballType.name}} ball's image">-->
     </div>
     <div class="ball__current-damage">Dmg: {{ballType.damage.value$.value | formatPoints}}</div>
-    <button class="ball__buy"
+    <button class="button ball__button"
+            *ngIf="!ballType.bought"
             [disabled]="ballType.bought || playgroundService.score$.value < ballType.cost.value$.value"
-            (click)="buy(ballType.type)">Buy
+            (click)="buy(ballType.type)">{{ballType.cost.value$.value | formatPoints}}
     </button>
-    <div class="ball__upgrade">
-      <button [disabled]="!ballType.bought || playgroundService.score$.value < ballType.cost.value$.value"
-              (click)="upgrade(ballType.type)" class="ball__button_upgrade">Cost: {{ballType.cost.value$.value | formatPoints}}</button>
-      <div class="ball__next-damage">Next dmg: {{ballType.damage.next | formatPoints}}</div>
-    </div>
+    <button *ngIf="ballType.bought"
+            [disabled]="!ballType.bought || playgroundService.score$.value < ballType.cost.value$.value"
+            (click)="upgrade(ballType.type)" class="button ball__button ball__button_upgrade">
+      {{ballType.cost.value$.value | formatPoints}}</button>
+    <div class="ball__next-damage">Next dmg: {{ballType.damage.next | formatPoints}}</div>
   </div>
 </div>
