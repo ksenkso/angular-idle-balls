@@ -1,25 +1,29 @@
+import {BehaviorSubject} from 'rxjs';
+
 export default class UpgradeStrategy {
-  public value: number;
+  public value$: BehaviorSubject<number>;
   public level: number;
+  private readonly base: number;
   private readonly factor: number;
 
-    get next(): number {
-        return this.calculate(this.level + 1);
-    }
+  get next(): number {
+    return this.calculate(this.level + 1);
+  }
 
-    constructor(value: number, factor = 1.1) {
-        this.value = value;
-        this.level = 1;
-        this.factor = factor;
-    }
+  constructor(value: number, factor = 1.1) {
+    this.value$ = new BehaviorSubject(value);
+    this.level = 1;
+    this.factor = factor;
+    this.base = value;
+  }
 
-    calculate(level: number): number {
-        return this.value * this.factor ** (level);
-    }
+  calculate(level: number): number {
+    return this.base * this.factor ** (level);
+  }
 
-    upgrade(): void {
-        this.level++;
-        this.value = this.calculate(this.level);
-    }
+  upgrade(): void {
+    this.level++;
+    this.value$.next(this.calculate(this.level));
+  }
 
 }
