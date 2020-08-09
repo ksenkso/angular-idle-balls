@@ -4,6 +4,7 @@ import EnemyBall from '../EnemyBall';
 import Ball from '../Ball';
 import {PlaygroundService} from '../playground.service';
 import {BallsService} from '../balls.service';
+import {BALL_TYPE} from '../BallType';
 
 export type RectSize = {
   width: number,
@@ -19,6 +20,7 @@ export class PlaygroundComponent implements AfterViewInit {
   private sizes: RectSize = null;
   private enemies: EnemyBall[] = [];
   private raq: number;
+  private rect: ClientRect;
 
   constructor(
     private playgroundService: PlaygroundService,
@@ -55,6 +57,7 @@ export class PlaygroundComponent implements AfterViewInit {
     };
     console.log(this.sizes);
     this.placeEnemies();
+    this.initClickInteractions();
   }
 
   placeBall(r = EnemyBall.radius): Point2D {
@@ -93,10 +96,10 @@ export class PlaygroundComponent implements AfterViewInit {
       const pos = this.placeBall();
       if (pos) {
         const ball = new EnemyBall({
-            pos,
-            points: Math.floor(this.playgroundService.pointsInEnemies.value$.value),
-            onDestroy: this.onEnemyDestroy.bind(this),
-          });
+          pos,
+          points: Math.floor(this.playgroundService.pointsInEnemies.value$.value),
+          onDestroy: this.onEnemyDestroy.bind(this),
+        });
         this.enemies.push(ball);
         ball.render(this.ctx);
       } else {
@@ -140,5 +143,34 @@ export class PlaygroundComponent implements AfterViewInit {
 
   private nextLevel(): void {
     this.placeEnemies();
+  }
+
+  private initClickInteractions(): void {
+    this.rect = this.canvas.nativeElement.getBoundingClientRect();
+    window.addEventListener('resize', () => {
+      this.rect = this.canvas.nativeElement.getBoundingClientRect();
+    });
+    this.canvas.nativeElement.addEventListener('mousemove', (e: MouseEvent) => {
+      const mousePos = {
+        x: e.clientX - this.rect.left,
+        y: e.clientY - this.rect.top
+      };
+      if (this.enemies.some(enemy => enemy.contains(mousePos))) {
+        this.canvas.nativeElement.style.cursor = 'pointer';
+      } else {
+        this.canvas.nativeElement.style.cursor = 'default';
+      }
+    });
+    this.canvas.nativeElement.addEventListener('click', (e: MouseEvent) => {
+      const mousePos = {
+        x: e.clientX - this.rect.left,
+        y: e.clientY - this.rect.top
+      };
+      const clickedEnemy = this.enemies.find(enemy => enemy.contains(mousePos));
+      if (clickedEnemy) {
+        this.playgroundService.addScore(Math.min(this.ballsService.ballTypes[BALL_TYPE.Click].damage.value$.value, clickedEnemy.points));
+        clickedEnemy.getDamage(this.ballsService.ballTypes[BALL_TYPE.Click].damage.value$.value);
+      }
+    });
   }
 }

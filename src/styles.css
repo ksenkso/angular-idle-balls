@@ -3,6 +3,7 @@ html, body {
   padding: 0;
   height: 100%;
   font-family: Tahoma, Arial, sans-serif;
+  user-select: none;
 }
 * {
   box-sizing: border-box;

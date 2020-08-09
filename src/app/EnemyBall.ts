@@ -51,4 +51,8 @@ export default class EnemyBall {
   private calculateColor(): void {
     this.fill = `hsl(${(this.initialPoints - this.points) / this.initialPoints * 180}, 75%, 45%)`;
   }
+
+  contains(point: { x: number; y: number }): boolean {
+    return Math.hypot(this.pos.x - point.x, this.pos.y - point.y) < EnemyBall.radius;
+  }
 }

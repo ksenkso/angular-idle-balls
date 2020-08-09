@@ -10,12 +10,13 @@ import {PlaygroundService} from './playground.service';
 })
 export class BallsService {
   public balls$: BehaviorSubject<Ball[]> = new BehaviorSubject<Ball[]>([]);
-  public ballTypes: BallType[] = [
-    new BallType(BALL_TYPE.Basic),
-    new BallType(BALL_TYPE.Blue),
-    new BallType(BALL_TYPE.Green),
-    new BallType(BALL_TYPE.Brown),
-  ];
+  public ballTypes: {[key in BALL_TYPE]: BallType} = {
+    [BALL_TYPE.Click]: new BallType(BALL_TYPE.Click),
+    [BALL_TYPE.Basic]: new BallType(BALL_TYPE.Basic),
+    [BALL_TYPE.Blue]: new BallType(BALL_TYPE.Blue),
+    [BALL_TYPE.Green]: new BallType(BALL_TYPE.Green),
+    [BALL_TYPE.Brown]: new BallType(BALL_TYPE.Brown),
+  };
 
   constructor(
     private playgroundService: PlaygroundService,
@@ -23,13 +24,13 @@ export class BallsService {
   }
 
   addBall(type: BALL_TYPE): void {
-    const ball = this.ballTypes.find(ballType => ballType.type === type).create();
+    const ball = this.ballTypes[type].create();
     this.balls$.next(this.balls$.value.concat(ball));
   }
 
   buy(type: BALL_TYPE): void {
-    const ballToBuy = this.ballTypes.find(ballType => ballType.type === type && !ballType.bought);
-    if (ballToBuy) {
+    const ballToBuy = this.ballTypes[type];
+    if (ballToBuy && !ballToBuy.bought) {
       const newScore = this.playgroundService.score$.value - ballToBuy.cost.value$.value;
       if (newScore >= 0) {
         ballToBuy.bought = true;
@@ -40,7 +41,7 @@ export class BallsService {
   }
 
   upgrade(type: BALL_TYPE): void {
-    const ballToUpgrade = this.ballTypes.find(ballType => ballType.type === type);
+    const ballToUpgrade = this.ballTypes[type];
     const newScore = this.playgroundService.score$.value - ballToUpgrade.cost.value$.value;
     if (newScore >= 0) {
       ballToUpgrade.upgrade();

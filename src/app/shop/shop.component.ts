@@ -15,7 +15,7 @@ export class ShopComponent {
     public playgroundService: PlaygroundService,
     private ballsService: BallsService
   ) {
-    this.ballTypes = ballsService.ballTypes;
+    this.ballTypes = Object.values(this.ballsService.ballTypes);
   }
 
   buy(type: BALL_TYPE): void {

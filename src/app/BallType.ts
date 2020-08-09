@@ -2,6 +2,7 @@ import UpgradeStrategy from './UpgradeStrategy';
 import Ball from './Ball';
 
 export enum BALL_TYPE {
+  Click,
   Basic,
   Blue,
   Green,
@@ -18,9 +19,15 @@ export type BallInfo = {
 };
 
 export const ballInfo: BallInfo = {
+  [BALL_TYPE.Click]: {
+    damage: 1,
+    cost: 1,
+    name: 'Click',
+    fill: '#000',
+  },
   [BALL_TYPE.Basic]: {
     damage: 10,
-    cost: 1,
+    cost: 10,
     name: 'Basic',
     fill: '#000000',
   },
@@ -61,6 +68,9 @@ export default class BallType {
     this.damage = new UpgradeStrategy(info.damage);
     this.cost = new UpgradeStrategy(info.cost, 1.15);
     this.name = info.name;
+    if (type === BALL_TYPE.Click) {
+      this.bought = true;
+    }
   }
 
   upgrade(): void {
