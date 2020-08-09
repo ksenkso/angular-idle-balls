@@ -10,7 +10,7 @@ export default class EnemyBall {
 
   static radius = 18;
   public pos: Vector;
-  private points: number;
+  points: number;
   private fill: string;
   private readonly onDestroy: (ball: EnemyBall) => void;
   private readonly initialPoints: number;

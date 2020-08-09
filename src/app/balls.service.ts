@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import Ball from './Ball';
-import Vector from './Vector';
-import BallType, {BALL_TYPES, BallTypes} from './BallType';
-
+import BallType, {BALL_TYPE} from './BallType';
+import {PlaygroundService} from './playground.service';
 
 
 @Injectable({
@@ -11,18 +10,41 @@ import BallType, {BALL_TYPES, BallTypes} from './BallType';
 })
 export class BallsService {
   public balls$: BehaviorSubject<Ball[]> = new BehaviorSubject<Ball[]>([]);
-  public ballTypes: BallTypes = {
-    [BALL_TYPES.Basic]: new BallType(BALL_TYPES.Basic),
-    [BALL_TYPES.Blue]: new BallType(BALL_TYPES.Blue),
-    [BALL_TYPES.Green]: new BallType(BALL_TYPES.Green),
-    [BALL_TYPES.Brown]: new BallType(BALL_TYPES.Brown),
-  };
+  public ballTypes: BallType[] = [
+    new BallType(BALL_TYPE.Basic),
+    new BallType(BALL_TYPE.Blue),
+    new BallType(BALL_TYPE.Green),
+    new BallType(BALL_TYPE.Brown),
+  ];
 
-  constructor() {
+  constructor(
+    private playgroundService: PlaygroundService,
+  ) {
   }
 
-  addBall(): void {
-    const ball = new Ball(new Vector(0, 0));
+  addBall(type: BALL_TYPE): void {
+    const ball = this.ballTypes.find(ballType => ballType.type === type).create();
     this.balls$.next(this.balls$.value.concat(ball));
+  }
+
+  buy(type: BALL_TYPE): void {
+    const ballToBuy = this.ballTypes.find(ballType => ballType.type === type && !ballType.bought);
+    if (ballToBuy) {
+      const newScore = this.playgroundService.score$.value - ballToBuy.cost.value$.value;
+      if (newScore >= 0) {
+        ballToBuy.bought = true;
+        this.playgroundService.score$.next(newScore);
+        this.addBall(type);
+      }
+    }
+  }
+
+  upgrade(type: BALL_TYPE): void {
+    const ballToUpgrade = this.ballTypes.find(ballType => ballType.type === type);
+    const newScore = this.playgroundService.score$.value - ballToUpgrade.cost.value$.value;
+    if (newScore >= 0) {
+      ballToUpgrade.upgrade();
+      this.playgroundService.score$.next(newScore);
+    }
   }
 }

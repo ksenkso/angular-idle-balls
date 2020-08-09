@@ -94,7 +94,7 @@ export class PlaygroundComponent implements AfterViewInit {
       if (pos) {
         const ball = new EnemyBall({
             pos,
-            points: Math.floor(this.playgroundService.pointsInEnemies.value),
+            points: Math.floor(this.playgroundService.pointsInEnemies.value$.value),
             onDestroy: this.onEnemyDestroy.bind(this),
           });
         this.enemies.push(ball);
@@ -121,8 +121,14 @@ export class PlaygroundComponent implements AfterViewInit {
     this.ballsService.balls$.value.forEach(b => {
       b.render(this.ctx);
       b.tick(this.sizes);
-      if (this.enemies.some(enemy => b.collideEnemy(enemy))) {
-        this.playgroundService.addScore(b.damage);
+      let i = 0;
+      for (; i < this.enemies.length; i++) {
+        const enemy = this.enemies[i];
+        if (b.collideEnemy(enemy)) {
+          this.playgroundService.addScore(Math.min(b.damage, enemy.points));
+          enemy.getDamage(b.damage);
+          break;
+        }
       }
     });
     this.raq = requestAnimationFrame(this.tick.bind(this));

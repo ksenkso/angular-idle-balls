@@ -1,11 +1,12 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, ViewChild, ViewEncapsulation} from '@angular/core';
 import {PlaygroundService} from './playground.service';
 import {PlaygroundComponent} from './playground/playground.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
   title = 'angular-idle-balls$';

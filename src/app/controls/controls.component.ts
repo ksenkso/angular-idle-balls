@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {PlaygroundService} from '../playground.service';
 import {BallsService} from '../balls.service';
+import {BALL_TYPE} from '../BallType';
 
 @Component({
   selector: 'app-controls',
@@ -28,7 +29,7 @@ export class ControlsComponent {
 
   addBall(): void {
     for (let i = 0; i < 40; i++) {
-      this.ballsService.addBall();
+      this.ballsService.addBall(BALL_TYPE.Basic);
     }
   }
 

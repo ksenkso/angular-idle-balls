@@ -1,14 +1,24 @@
 import EnemyBall from './EnemyBall.js';
-import Vector from './Vector';
+import Vector, {Point2D} from './Vector';
 import {RectSize} from './playground/playground.component';
-
+export type BallConfig = {
+  pos?: Point2D,
+  fill?: string,
+  damage?: number,
+};
 export default class Ball {
   private velocity: Vector;
-  public readonly damage: number;
+  public damage: number;
+  public pos: Vector;
+  public radius = 5;
+  private readonly fill: string = '#000000';
 
-  constructor(public pos: Vector, public radius: number = 5, private fill: string = '#000000') {
+  constructor({pos = {x: 0, y: 0}, fill = '#000000', damage = 10}: BallConfig) {
+    this.fill = fill;
+    this.radius = 5;
+    this.pos = new Vector(pos.x, pos.y);
     this.velocity = Vector.randomNormalized();
-    this.damage = 10;
+    this.damage = damage;
   }
 
   tick(sizes: RectSize): void {
@@ -40,7 +50,7 @@ export default class Ball {
       const n = Vector.normalize(Vector.sub(this.pos, enemy.pos));
       this.velocity = Vector.sub(this.velocity, Vector.scale(n, 2 * Vector.dot(this.velocity, n)));
       this.pos = Vector.add(this.pos, this.velocity);
-      enemy.getDamage(this.damage);
+
       return true;
     }
   }
