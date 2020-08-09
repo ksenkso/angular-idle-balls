@@ -1,0 +1,29 @@
+:host {
+  grid-area: shop;
+}
+.shop {
+  padding-top: 12px;
+}
+.shop__ball {
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  margin-bottom: 12px;
+  padding: 5px 7px;
+  display: flex;
+  flex-direction: column;
+}
+
+.shop__ball > * {
+  margin-bottom: 4px;
+}
+
+.ball__upgrade {
+  display: flex;
+}
+.ball__upgrade > * {
+  flex: 1 1 50%;
+}
+
+.shop__ball:last-child {
+  margin-bottom: 0;
+}

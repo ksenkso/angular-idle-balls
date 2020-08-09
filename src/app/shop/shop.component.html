@@ -1,0 +1,19 @@
+<div class="shop">
+  <div class="shop__ball" *ngFor="let ballType of ballTypes">
+    <div class="ball__name">{{ballType.name}}</div>
+    <div class="ball__level">Lvl {{ballType.damage.level}}</div>
+    <div class="ball__image">
+      <!--      <img src="/assets/balls/{{ballType.type}}" alt="{{ballType.name}} ball's image">-->
+    </div>
+    <div class="ball__current-damage">Dmg: {{ballType.damage.value$.value}}</div>
+    <button class="ball__buy"
+            [disabled]="ballType.bought || playgroundService.score$.value < ballType.cost.value$.value"
+            (click)="buy(ballType.type)">Buy
+    </button>
+    <div class="ball__upgrade">
+      <button [disabled]="!ballType.bought || playgroundService.score$.value < ballType.cost.value$.value"
+              (click)="upgrade(ballType.type)" class="ball__button_upgrade">Cost: {{ballType.cost.value$.value}}</button>
+      <div class="ball__next-damage">Next dmg: {{ballType.damage.next}}</div>
+    </div>
+  </div>
+</div>
