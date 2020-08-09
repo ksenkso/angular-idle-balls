@@ -21,6 +21,7 @@ export class PlaygroundComponent implements AfterViewInit {
   private enemies: EnemyBall[] = [];
   private raq: number;
   private rect: ClientRect;
+  public isPaused: boolean;
 
   constructor(
     private playgroundService: PlaygroundService,
@@ -109,6 +110,7 @@ export class PlaygroundComponent implements AfterViewInit {
   }
 
   run(): void {
+    this.isPaused = false;
     requestAnimationFrame(this.tick.bind(this));
   }
 
@@ -138,6 +140,7 @@ export class PlaygroundComponent implements AfterViewInit {
   }
 
   pause(): void {
+    this.isPaused = true;
     cancelAnimationFrame(this.raq);
   }
 

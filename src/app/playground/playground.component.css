@@ -1,5 +1,6 @@
 canvas {
-  margin: 0 auto;
+  width: 500px;
+  height: 800px;
   display: block;
   border: 1px solid black;
   background-color: #666666;
@@ -8,4 +9,27 @@ canvas {
 
 :host {
   grid-area: canvas;
+}
+
+.playground {
+  position: relative;
+  width: 500px;
+  margin: 0 auto;
+}
+
+.pause {
+  position: absolute;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, .7);
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  border-radius: 3px;
+  line-height: 800px;
+  vertical-align: middle;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 72px;
+  color: #fff;
 }
