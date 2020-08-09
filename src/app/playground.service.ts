@@ -7,7 +7,7 @@ import UpgradeStrategy from './UpgradeStrategy';
 })
 export class PlaygroundService {
 
-  public isPaused$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  public isPaused$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public score$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
   public message$: Subject<string> = new Subject<string>();
   public pointsInEnemies: UpgradeStrategy = new UpgradeStrategy(20, 1.2);

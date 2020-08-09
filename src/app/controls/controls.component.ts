@@ -11,12 +11,14 @@ import {BALL_TYPE} from '../BallType';
 export class ControlsComponent {
   isPaused = true;
   score = 0;
+  level: number;
   constructor(
     private playgroundService: PlaygroundService,
     private ballsService: BallsService,
   ) {
     this.playgroundService.isPaused$.subscribe(isPaused => this.isPaused = isPaused);
     this.playgroundService.score$.subscribe(score => this.score = score);
+    this.playgroundService.pointsInEnemies.value$.subscribe(() => this.level = this.playgroundService.pointsInEnemies.level);
   }
 
   run(): void {

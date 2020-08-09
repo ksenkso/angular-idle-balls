@@ -1,7 +1,7 @@
 app-root {
   width: 100%;
   display: grid;
-  grid-template-rows: 80px 1fr;
+  grid-template-rows: 100px 1fr;
   grid-template-columns: 1fr 300px;
   grid-template-areas: "canvas stats" "canvas shop";
   padding: 20px;

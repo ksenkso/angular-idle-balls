@@ -1,4 +1,5 @@
 <div class="controls">
+  <div class="controls__level">Lvl {{level}}</div>
   <div class="controls__score">Score: {{score | formatPoints}}</div>
   <button class="button controls__button" [disabled]="!isPaused" (click)="run()">RUN</button>
 <!--  <button [disabled]="isPaused" (click)="addBall()">ADD</button>-->
