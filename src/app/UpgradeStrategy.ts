@@ -18,7 +18,7 @@ export default class UpgradeStrategy {
   }
 
   calculate(level: number): number {
-    return this.base * this.factor ** (level);
+    return Math.round(this.base * this.factor ** (level));
   }
 
   upgrade(): void {

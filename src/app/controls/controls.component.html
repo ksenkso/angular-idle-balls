@@ -1,7 +1,7 @@
 <div class="controls">
   <div>{{isPaused ? 'paused' : 'playing'}}</div>
-  <div>Score: {{score}}</div>
+  <div>Score: {{score | formatPoints}}</div>
   <button [disabled]="!isPaused" (click)="run()">RUN</button>
-  <button [disabled]="isPaused" (click)="addBall()">ADD</button>
+<!--  <button [disabled]="isPaused" (click)="addBall()">ADD</button>-->
   <button [disabled]="isPaused" (click)="pause()">PAUSE</button>
 </div>
