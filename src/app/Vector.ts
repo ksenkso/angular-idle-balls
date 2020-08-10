@@ -26,6 +26,9 @@ export default class Vector {
     return new Vector(v.x / l, v.y / l);
   }
 
+  static setLength(v: Vector, l: number): Vector {
+    return Vector.scale(Vector.normalize(v), l);
+  }
 
   static scale(v: Vector, n: number): Vector {
     return new Vector(n * v.x, n * v.y);

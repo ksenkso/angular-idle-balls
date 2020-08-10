@@ -7,6 +7,7 @@ export type BallConfig = {
   damage?: number,
 };
 export default class Ball {
+  public static speed = 1.5;
   private velocity: Vector;
   public damage: number;
   public pos: Vector;
@@ -17,7 +18,7 @@ export default class Ball {
     this.fill = fill;
     this.radius = 5;
     this.pos = new Vector(pos.x, pos.y);
-    this.velocity = Vector.randomNormalized();
+    this.velocity = Vector.setLength(Vector.randomNormalized(), Ball.speed);
     this.damage = damage;
   }
 
@@ -48,7 +49,13 @@ export default class Ball {
   collideEnemy(enemy: EnemyBall): boolean {
     if (Math.hypot(this.pos.x - enemy.pos.x, this.pos.y - enemy.pos.y) < (EnemyBall.radius + this.radius)) {
       const n = Vector.normalize(Vector.sub(this.pos, enemy.pos));
-      this.velocity = Vector.sub(this.velocity, Vector.scale(n, 2 * Vector.dot(this.velocity, n)));
+      this.velocity = Vector.setLength(
+        Vector.sub(
+          this.velocity,
+          Vector.scale(n, 2 * Vector.dot(this.velocity, n))
+        ),
+        Ball.speed
+      );
       this.pos = Vector.add(this.pos, this.velocity);
 
       return true;
