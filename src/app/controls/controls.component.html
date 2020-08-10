@@ -2,6 +2,6 @@
   <div class="controls__level">Lvl {{level}}</div>
   <app-progress [progress]="progress"></app-progress>
   <div class="controls__score">Score: {{score | formatPoints}}</div>
-  <button class="button controls__button" [disabled]="!isPaused" (click)="run()">RUN</button>
-  <button class="button controls__button" [disabled]="isPaused" (click)="pause()">PAUSE</button>
+  <button class="button controls__button" *ngIf="isPaused" (click)="play()">PLAY</button>
+  <button class="button controls__button" *ngIf="!isPaused" (click)="pause()">PAUSE</button>
 </div>

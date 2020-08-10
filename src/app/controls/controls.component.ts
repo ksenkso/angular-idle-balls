@@ -20,7 +20,7 @@ export class ControlsComponent {
     this.playgroundService.levelProgress$.subscribe(levelProgress => this.progress = levelProgress);
   }
 
-  run(): void {
+  play(): void {
     this.playgroundService.run();
   }
 

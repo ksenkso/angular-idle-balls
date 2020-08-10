@@ -3,9 +3,8 @@
     <div class="ball__name">{{ballType.name}}</div>
     <div class="ball__level">Lvl {{ballType.damage.level}}</div>
     <div class="ball__image">
-      <!--      <img src="/assets/balls/{{ballType.type}}" alt="{{ballType.name}} ball's image">-->
     </div>
-    <div class="ball__current-damage">Dmg: {{ballType.damage.value$.value | formatPoints}}</div>
+    <div [style.opacity]="ballType.bought ? 1 : 0" class="ball__current-damage">Dmg: {{ballType.damage.value$.value | formatPoints}}</div>
     <button class="button ball__button"
             *ngIf="!ballType.bought"
             [disabled]="ballType.bought || playgroundService.score$.value < ballType.cost.value$.value"
@@ -15,6 +14,7 @@
             [disabled]="!ballType.bought || playgroundService.score$.value < ballType.cost.value$.value"
             (click)="upgrade(ballType.type)" class="button ball__button ball__button_upgrade">
       {{ballType.cost.value$.value | formatPoints}}</button>
-    <div class="ball__next-damage">Next dmg: {{ballType.damage.next | formatPoints}}</div>
+    <div *ngIf="ballType.bought" class="ball__next-damage">Next dmg: {{ballType.damage.next | formatPoints}}</div>
+    <div *ngIf="!ballType.bought" class="ball__current-damage">Dmg: {{ballType.damage.value$.value | formatPoints}}</div>
   </div>
 </div>
