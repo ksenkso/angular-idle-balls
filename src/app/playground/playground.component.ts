@@ -22,6 +22,8 @@ export class PlaygroundComponent implements AfterViewInit {
   private raq: number;
   private rect: ClientRect;
   public isPaused: boolean;
+  public levelPoints = 1;
+  public progress = 0;
 
   constructor(
     private playgroundService: PlaygroundService,
@@ -56,7 +58,6 @@ export class PlaygroundComponent implements AfterViewInit {
       width: this.canvas.nativeElement.width,
       height: this.canvas.nativeElement.height,
     };
-    console.log(this.sizes);
     this.placeEnemies();
     this.initClickInteractions();
   }
@@ -71,7 +72,6 @@ export class PlaygroundComponent implements AfterViewInit {
       };
       tries++;
       if (tries > 500) {
-        console.log(`i'm tired`);
         return null;
       }
     }
@@ -104,9 +104,11 @@ export class PlaygroundComponent implements AfterViewInit {
         this.enemies.push(ball);
         ball.render(this.ctx);
       } else {
-        return;
+        break;
       }
     }
+    const total = this.playgroundService.pointsInEnemies.value$.value * 40;
+    this.playgroundService.setLevelTotal(total);
   }
 
   run(): void {

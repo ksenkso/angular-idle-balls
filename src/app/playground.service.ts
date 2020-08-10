@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Subject} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import UpgradeStrategy from './UpgradeStrategy';
 
 @Injectable({
@@ -8,9 +8,11 @@ import UpgradeStrategy from './UpgradeStrategy';
 export class PlaygroundService {
 
   public isPaused$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public score$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
-  public message$: Subject<string> = new Subject<string>();
+  public score$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   public pointsInEnemies: UpgradeStrategy = new UpgradeStrategy(20, 1.2);
+  public levelProgress$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  private levelTotal = Infinity;
+  private levelScore = 0;
 
   run(): void {
     this.isPaused$.next(false);
@@ -22,10 +24,17 @@ export class PlaygroundService {
 
   addScore(amount: number): void {
     this.score$.next(this.score$.value + amount);
+    this.levelScore += amount;
+    this.levelProgress$.next(this.levelScore / this.levelTotal);
   }
 
   nextLevel(): void {
-    this.message$.next('Level cleared!');
+    this.levelScore = 0;
     this.pointsInEnemies.upgrade();
+  }
+
+  setLevelTotal(total: number): void {
+    this.levelTotal = total;
+    this.levelProgress$.next(this.levelScore / this.levelTotal);
   }
 }

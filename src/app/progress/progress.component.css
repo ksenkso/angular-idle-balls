@@ -1,0 +1,15 @@
+.progress {
+  position: relative;
+  overflow: hidden;
+  height: 6px;
+  border-radius: 3px;
+  background-color: #262626;
+}
+.progress__done {
+  position: absolute;
+  background-color: #ffb728;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}

@@ -1,5 +1,4 @@
 import {Component, ViewChild, ViewEncapsulation} from '@angular/core';
-import {PlaygroundService} from './playground.service';
 import {PlaygroundComponent} from './playground/playground.component';
 
 @Component({
@@ -13,9 +12,5 @@ export class AppComponent {
   isPaused = true;
   score = 0;
   @ViewChild(PlaygroundComponent) playground: PlaygroundComponent;
-
-  constructor(private playgroundService: PlaygroundService) {
-    this.playgroundService.message$.subscribe(message => console.log(message));
-  }
 
 }

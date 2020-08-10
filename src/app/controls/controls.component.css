@@ -12,6 +12,7 @@
 .controls__score {
   text-align: right;
   font-weight: bold;
+  margin-top: 4px;
   margin-bottom: 8px;
 }
 .controls__button {
