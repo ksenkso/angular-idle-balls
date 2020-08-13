@@ -117,8 +117,13 @@
               "devServerTarget": "angular-idle-balls:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {}
         }
       }
-    }},
+    }
+  },
   "defaultProject": "angular-idle-balls"
 }
