@@ -61,6 +61,7 @@ export class PlaygroundService extends StorageService<PlaygroundData> {
   nextLevel(): void {
     this.levelScore = 0;
     this.pointsInEnemies.upgrade();
+    this.placeEnemies();
   }
 
   setLevelTotal(total: number): void {
@@ -119,6 +120,12 @@ export class PlaygroundService extends StorageService<PlaygroundData> {
   }
 
   placeEnemies(): void {
+    const total = this.pointsInEnemies.value$.value * PlaygroundService.enemiesCount;
+    if (!this.enemies.length) {
+      this.setLevelTotal(total);
+    } else {
+      this.levelTotal = total;
+    }
     if (!this.enemies.length) {
       for (let i = 0; i < PlaygroundService.enemiesCount; i++) {
         const pos = this.placeBall();
@@ -134,7 +141,6 @@ export class PlaygroundService extends StorageService<PlaygroundData> {
         }
       }
     }
-    const total = this.pointsInEnemies.value$.value * PlaygroundService.enemiesCount;
-    this.setLevelTotal(total);
+
   }
 }

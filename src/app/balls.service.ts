@@ -5,11 +5,12 @@ import BallType, {BALL_TYPE, BallTypeInfo} from './BallType';
 import {PlaygroundService} from './playground.service';
 import {StorageService} from './storage.service';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class BallsService extends StorageService<BallTypeInfo[]> {
-  public static shouldNotLoad = true;
+  // public static shouldNotSave = true;
   public balls$: BehaviorSubject<Ball[]> = new BehaviorSubject<Ball[]>([]);
   public ballTypes: BallType[];
 
@@ -17,6 +18,12 @@ export class BallsService extends StorageService<BallTypeInfo[]> {
     private playgroundService: PlaygroundService,
   ) {
     super('balls');
+    this.ballTypes
+      .filter(ballType => ballType.bought && ballType.type !== BALL_TYPE.Click)
+      .map(ballType => ballType.create())
+      .forEach((ball) => {
+        this.balls$.next(this.balls$.value.concat(ball));
+      });
   }
 
   protected init(data?: BallTypeInfo[]): void {

@@ -26,17 +26,7 @@ export class PlaygroundComponent implements AfterViewInit {
     private playgroundService: PlaygroundService,
     private ballsService: BallsService,
   ) {
-    this.ballsService.balls$.subscribe((balls: Ball[]) => {
-      if (!balls.length) {
-        return;
-      }
-      const pos = this.playgroundService.placeBall(5);
-      if (pos) {
-        balls[balls.length - 1].pos = new Vector(pos.x, pos.y);
-      } else {
-        throw new Error('NO PLACE!!!');
-      }
-    });
+
     this.playgroundService.isPaused$.subscribe(isPaused => {
       if (isPaused) {
         this.pause();
@@ -56,6 +46,26 @@ export class PlaygroundComponent implements AfterViewInit {
       width: this.canvas.nativeElement.width,
       height: this.canvas.nativeElement.height,
     };
+    // only need to create balls in service, this handles all the positioning
+    this.ballsService.balls$.value.forEach(ball => {
+      const pos = this.playgroundService.placeBall(5);
+      if (pos) {
+        ball.pos = new Vector(pos.x, pos.y);
+      } else {
+        throw new Error('NO PLACE!!!');
+      }
+    });
+    this.ballsService.balls$.subscribe((balls: Ball[]) => {
+      if (!balls.length) {
+        return;
+      }
+      const pos = this.playgroundService.placeBall(5);
+      if (pos) {
+        balls[balls.length - 1].pos = new Vector(pos.x, pos.y);
+      } else {
+        throw new Error('NO PLACE!!!');
+      }
+    });
     this.playgroundService.placeEnemies();
     this.initClickInteractions();
 
