@@ -47,6 +47,5 @@ export default class UpgradeStrategy {
     } else {
       this.level++;
     }
-    this.value$.next(this.calculate(this.level));
   }
 }
