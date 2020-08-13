@@ -9,13 +9,13 @@ import {PlaygroundService} from '../playground.service';
   styleUrls: ['./shop.component.css']
 })
 export class ShopComponent {
-  public ballTypes: BallType[];
+  ballTypes: BallType[] = [];
 
   constructor(
     public playgroundService: PlaygroundService,
-    private ballsService: BallsService
+    public ballsService: BallsService,
   ) {
-    this.ballTypes = Object.values(this.ballsService.ballTypes);
+    this.ballTypes = this.ballsService.ballTypes;
   }
 
   buy(type: BALL_TYPE): void {

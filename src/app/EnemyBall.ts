@@ -1,4 +1,5 @@
 import Vector, {Point2D} from './Vector';
+
 export type EnemyBallConfig = {
   pos: Point2D,
   fill?: string,
@@ -14,6 +15,7 @@ export default class EnemyBall {
   private fill: string;
   private readonly onDestroy: (ball: EnemyBall) => void;
   private readonly initialPoints: number;
+
   constructor({pos, points, onDestroy, fill = 'hsl(0, 75%, 45%)', initialPoints}: EnemyBallConfig) {
     this.pos = new Vector(pos.x, pos.y);
     this.fill = fill;
@@ -54,5 +56,14 @@ export default class EnemyBall {
 
   contains(point: { x: number; y: number }): boolean {
     return Math.hypot(this.pos.x - point.x, this.pos.y - point.y) < EnemyBall.radius;
+  }
+
+  serialize(): object {
+    return {
+      pos: this.pos,
+      points: this.points,
+      initialPoints: this.initialPoints,
+      fill: this.fill,
+    };
   }
 }

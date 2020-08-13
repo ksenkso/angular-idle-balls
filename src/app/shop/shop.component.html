@@ -1,5 +1,5 @@
 <div class="shop">
-  <div class="shop__ball" *ngFor="let ballType of ballTypes">
+  <div class="shop__ball" *ngFor="let ballType of ballsService.ballTypes">
     <div class="ball__name">{{ballType.name}}</div>
     <div class="ball__level">Lvl {{ballType.damage.level}}</div>
     <div class="ball__image">

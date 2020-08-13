@@ -13,4 +13,5 @@ export class AppComponent {
   score = 0;
   @ViewChild(PlaygroundComponent) playground: PlaygroundComponent;
 
+
 }
