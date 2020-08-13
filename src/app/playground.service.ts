@@ -27,8 +27,8 @@ export class PlaygroundService extends StorageService<PlaygroundData> {
   public pointsInEnemies: UpgradeStrategy;
   public levelProgress$: BehaviorSubject<number>;
   public sizes: RectSize;
-  private levelTotal = Infinity;
-  private levelScore = 0;
+  private levelTotal;
+  private levelScore;
 
   constructor() {
     super('playground');
@@ -87,8 +87,6 @@ export class PlaygroundService extends StorageService<PlaygroundData> {
       this.enemies = data.enemies.map(enemy => new EnemyBall({...enemy, onDestroy: this.onEnemyDestroy.bind(this)}));
       this.score$ = new BehaviorSubject<number>(data.score);
       this.pointsInEnemies = new UpgradeStrategy({factor: 1.2, base: 20, level: data.level});
-      this.levelTotal = Infinity;
-      this.levelScore = 0;
     } else {
       this.enemies = [];
       this.isPaused$ = new BehaviorSubject<boolean>(false);
