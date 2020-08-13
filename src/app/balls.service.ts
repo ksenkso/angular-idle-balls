@@ -10,7 +10,8 @@ import {StorageService} from './storage.service';
   providedIn: 'root'
 })
 export class BallsService extends StorageService<BallTypeInfo[]> {
-  // public static shouldNotSave = true;
+  public static shouldNotSave = false;
+  public static shouldNotLoad = false;
   public balls$: BehaviorSubject<Ball[]> = new BehaviorSubject<Ball[]>([]);
   public ballTypes: BallType[];
 

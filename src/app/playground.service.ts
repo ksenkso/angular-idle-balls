@@ -19,8 +19,8 @@ type PlaygroundData = {
 })
 export class PlaygroundService extends StorageService<PlaygroundData> {
   public static enemiesCount = 40;
-  // public static shouldNotLoad = true;
-  // public static shouldNotSave = true;
+  public static shouldNotLoad = false;
+  public static shouldNotSave = false;
   public enemies: EnemyBall[];
   public isPaused$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public score$: BehaviorSubject<number>;

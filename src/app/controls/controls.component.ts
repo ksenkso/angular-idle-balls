@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {PlaygroundService} from '../playground.service';
+import {BallsService} from '../balls.service';
 
 @Component({
   selector: 'app-controls',
@@ -28,4 +29,15 @@ export class ControlsComponent {
     this.playgroundService.pause();
   }
 
+  resetGame(): void {
+    const shouldReset = confirm('This will reset all your progress. Continue?');
+    if (shouldReset) {
+      PlaygroundService.shouldNotSave = true;
+      PlaygroundService.shouldNotLoad = true;
+      BallsService.shouldNotSave = true;
+      BallsService.shouldNotLoad = true;
+      localStorage.clear();
+      location.reload();
+    }
+  }
 }

@@ -4,4 +4,5 @@
   <div class="controls__score">Score: {{score | formatPoints}}</div>
   <button class="button controls__button" *ngIf="isPaused" (click)="play()">PLAY</button>
   <button class="button controls__button" *ngIf="!isPaused" (click)="pause()">PAUSE</button>
+  <button class="button controls__button" (click)="resetGame()">reset</button>
 </div>
