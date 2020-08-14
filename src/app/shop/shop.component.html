@@ -7,12 +7,17 @@
     <div [style.opacity]="ballType.bought ? 1 : 0" class="ball__current-damage">Dmg: {{ballType.damage.value$.value | formatPoints}}</div>
     <button class="button ball__button"
             *ngIf="!ballType.bought"
+            (click)="buy(ballType.type)"
             [disabled]="ballType.bought || playgroundService.score$.value < ballType.cost.value$.value"
-            (click)="buy(ballType.type)">{{ballType.cost.value$.value | formatPoints}}
+
+    >{{ballType.cost.value$.value | formatPoints}}
     </button>
     <button *ngIf="ballType.bought"
             [disabled]="!ballType.bought || playgroundService.score$.value < ballType.cost.value$.value"
-            (click)="upgrade(ballType.type)" class="button ball__button ball__button_upgrade">
+            (mousedown)="initiateUpgrading(ballType.type)"
+            (mouseup)="stopUpgrading()"
+            class="button ball__button ball__button_upgrade">
+
       {{ballType.cost.value$.value | formatPoints}}</button>
     <div *ngIf="ballType.bought" class="ball__next-damage">Next dmg: {{ballType.damage.next | formatPoints}}</div>
     <div *ngIf="!ballType.bought" class="ball__current-damage">Dmg: {{ballType.damage.value$.value | formatPoints}}</div>

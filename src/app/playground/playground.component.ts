@@ -20,7 +20,6 @@ export class PlaygroundComponent implements AfterViewInit {
   private raq: number;
   private rect: ClientRect;
   public isPaused: boolean;
-  public progress = 0;
   private useMouseInterval: number;
   private useMouseTimeout: number;
 

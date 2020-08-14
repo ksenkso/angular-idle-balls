@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {BallsService} from '../balls.service';
-import BallType, {BALL_TYPE} from '../BallType';
+import BallType from '../BallType';
 import {PlaygroundService} from '../playground.service';
 
 @Component({
@@ -10,19 +10,37 @@ import {PlaygroundService} from '../playground.service';
 })
 export class ShopComponent {
   ballTypes: BallType[] = [];
+  private upgradeTimeout: number;
+  private upgradeInterval: number;
 
   constructor(
     public playgroundService: PlaygroundService,
     public ballsService: BallsService,
   ) {
     this.ballTypes = this.ballsService.ballTypes;
+    document.addEventListener('mouseup', this.stopUpgrading.bind(this));
   }
 
-  buy(type: BALL_TYPE): void {
+  initiateUpgrading(type: string): void {
+    this.upgrade(type);
+    this.upgradeTimeout = setTimeout(() => {
+      this.upgradeTimeout = null;
+      this.upgradeInterval = setInterval(this.upgrade.bind(this, type), 1000 / 6);
+    }, 1100 / 6);
+  }
+
+  buy(type: string): void {
     this.ballsService.buy(type);
   }
 
-  upgrade(type: BALL_TYPE): void {
-    this.ballsService.upgrade(type);
+  upgrade(type: string): void {
+    if (!this.ballsService.upgrade(type)) {
+      this.stopUpgrading();
+    }
+  }
+
+  stopUpgrading(): void {
+    clearTimeout(this.upgradeTimeout);
+    clearInterval(this.upgradeInterval);
   }
 }

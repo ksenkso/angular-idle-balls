@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import Ball from './Ball';
-import BallType, {BALL_TYPE, BallTypeInfo} from './BallType';
+import BallType, {BallTypeInfo} from './BallType';
 import {PlaygroundService} from './playground.service';
 import {StorageService} from './storage.service';
 
@@ -20,7 +20,7 @@ export class BallsService extends StorageService<BallTypeInfo[]> {
   ) {
     super('balls');
     this.ballTypes
-      .filter(ballType => ballType.bought && ballType.type !== BALL_TYPE.Click)
+      .filter(ballType => ballType.bought && ballType.type !== 'click')
       .map(ballType => ballType.create(this.playgroundService.ctx))
       .forEach((ball) => {
         this.balls$.next(this.balls$.value.concat(ball));
@@ -39,16 +39,16 @@ export class BallsService extends StorageService<BallTypeInfo[]> {
     return this.ballTypes.map(ballType => ballType.serialize());
   }
 
-  getBallType(type: BALL_TYPE): BallType {
+  getBallType(type: string): BallType {
     return this.ballTypes.find(ballType => ballType.type === type);
   }
 
-  addBall(type: BALL_TYPE): void {
+  addBall(type: string): void {
     const ball = this.getBallType(type).create(this.playgroundService.ctx);
     this.balls$.next(this.balls$.value.concat(ball));
   }
 
-  buy(type: BALL_TYPE): void {
+  buy(type: string): void {
     const ballToBuy = this.getBallType(type);
     if (ballToBuy && !ballToBuy.bought) {
       const newScore = this.playgroundService.score$.value - ballToBuy.cost.value$.value;
@@ -60,13 +60,15 @@ export class BallsService extends StorageService<BallTypeInfo[]> {
     }
   }
 
-  upgrade(type: BALL_TYPE): void {
+  upgrade(type: string): boolean {
     const ballToUpgrade = this.getBallType(type);
     const newScore = this.playgroundService.score$.value - ballToUpgrade.cost.value$.value;
     if (newScore >= 0) {
       ballToUpgrade.upgrade();
       this.playgroundService.score$.next(newScore);
+      return true;
     }
+    return false;
   }
 
 }
