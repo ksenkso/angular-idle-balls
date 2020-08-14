@@ -21,6 +21,8 @@ export class PlaygroundComponent implements AfterViewInit {
   private rect: ClientRect;
   public isPaused: boolean;
   public progress = 0;
+  private useMouseInterval: number;
+  private useMouseTimeout: number;
 
   constructor(
     private playgroundService: PlaygroundService,
@@ -38,16 +40,16 @@ export class PlaygroundComponent implements AfterViewInit {
   }
 
   @ViewChild('canvas', {read: ElementRef}) canvas: ElementRef;
-  private ctx: CanvasRenderingContext2D;
 
   ngAfterViewInit(): void {
-    this.ctx = this.canvas.nativeElement.getContext('2d');
+    this.playgroundService.ctx = this.canvas.nativeElement.getContext('2d');
     this.playgroundService.sizes = {
       width: this.canvas.nativeElement.width,
       height: this.canvas.nativeElement.height,
     };
     // only need to create balls in service, this handles all the positioning
     this.ballsService.balls$.value.forEach(ball => {
+      ball.ctx = this.playgroundService.ctx;
       const pos = this.playgroundService.placeBall(5);
       if (pos) {
         ball.pos = new Vector(pos.x, pos.y);
@@ -68,10 +70,6 @@ export class PlaygroundComponent implements AfterViewInit {
     });
     this.playgroundService.placeEnemies();
     this.initClickInteractions();
-
-    /*this.playgroundService.pointsInEnemies.value$.subscribe(() => {
-      this.nextLevel();
-    });*/
   }
 
   run(): void {
@@ -79,17 +77,17 @@ export class PlaygroundComponent implements AfterViewInit {
     requestAnimationFrame(this.tick.bind(this));
   }
 
-  nextTick(cb): void {
-    setTimeout(cb, 8);
-  }
-
   tick(): void {
-    this.ctx.clearRect(0, 0, 500, 800);
+    this.playgroundService.ctx.clearRect(0, 0, 500, 800);
+    // this.ballsService.moveParticles();
     this.playgroundService.enemies.forEach(e => {
-      e.render(this.ctx);
+      if (e.particles) {
+        e.particles.tick();
+      }
+      e.render();
     });
     this.ballsService.balls$.value.forEach(b => {
-      b.render(this.ctx);
+      b.render();
       b.tick(this.playgroundService.sizes);
       let i = 0;
       for (; i < this.playgroundService.enemies.length; i++) {
@@ -109,9 +107,22 @@ export class PlaygroundComponent implements AfterViewInit {
     cancelAnimationFrame(this.raq);
   }
 
-  /*private nextLevel(): void {
-    this.placeEnemies();
-  }*/
+  private useMouseOnEnemy(e: MouseEvent): void {
+    const mousePos = this.getMouseCoords(e);
+    const targetEnemy = this.playgroundService.enemies.find(enemy => enemy.contains(mousePos));
+    if (targetEnemy) {
+      targetEnemy.emitParticles();
+      this.playgroundService.addScore(Math.min(this.ballsService.getBallType(BALL_TYPE.Click).damage.value$.value, targetEnemy.points));
+      targetEnemy.getDamage(this.ballsService.getBallType(BALL_TYPE.Click).damage.value$.value);
+    }
+  }
+
+  private getMouseCoords(e: MouseEvent): { x: number, y: number } {
+    return {
+      x: e.clientX - this.rect.left,
+      y: e.clientY - this.rect.top
+    };
+  }
 
   private initClickInteractions(): void {
     this.rect = this.canvas.nativeElement.getBoundingClientRect();
@@ -129,16 +140,19 @@ export class PlaygroundComponent implements AfterViewInit {
         this.canvas.nativeElement.style.cursor = 'default';
       }
     });
-    this.canvas.nativeElement.addEventListener('click', (e: MouseEvent) => {
-      const mousePos = {
-        x: e.clientX - this.rect.left,
-        y: e.clientY - this.rect.top
-      };
-      const clickedEnemy = this.playgroundService.enemies.find(enemy => enemy.contains(mousePos));
-      if (clickedEnemy) {
-        this.playgroundService.addScore(Math.min(this.ballsService.getBallType(BALL_TYPE.Click).damage.value$.value, clickedEnemy.points));
-        clickedEnemy.getDamage(this.ballsService.getBallType(BALL_TYPE.Click).damage.value$.value);
+    this.canvas.nativeElement.addEventListener('mousedown', (e: MouseEvent) => {
+      this.useMouseOnEnemy(e);
+      this.useMouseTimeout = setTimeout(() => {
+        this.useMouseTimeout = null;
+        this.useMouseInterval = setInterval(this.useMouseOnEnemy.bind(this, e), 1000 / 6);
+      }, 1100 / 6);
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (this.useMouseTimeout) {
+        clearTimeout(this.useMouseTimeout);
       }
+      clearInterval(this.useMouseInterval);
     });
   }
 }

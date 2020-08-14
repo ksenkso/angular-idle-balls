@@ -1,7 +1,9 @@
 import EnemyBall from './EnemyBall.js';
 import Vector, {Point2D} from './Vector';
 import {RectSize} from './playground/playground.component';
+
 export type BallConfig = {
+  ctx?: CanvasRenderingContext2D,
   pos?: Point2D,
   fill?: string,
   damage?: number,
@@ -11,10 +13,12 @@ export default class Ball {
   private velocity: Vector;
   public damage: number;
   public pos: Vector;
+  public ctx: CanvasRenderingContext2D;
   public radius = 5;
   private readonly fill: string = '#000000';
 
-  constructor({pos = {x: 0, y: 0}, fill = '#000000', damage = 10}: BallConfig) {
+  constructor({ctx, pos = {x: 0, y: 0}, fill = '#000000', damage = 10}: BallConfig) {
+    this.ctx = ctx;
     this.fill = fill;
     this.radius = 5;
     this.pos = new Vector(pos.x, pos.y);
@@ -63,11 +67,11 @@ export default class Ball {
   }
 
 
-  render(ctx: CanvasRenderingContext2D): void {
-    ctx.beginPath();
-    ctx.arc(this.pos.x, this.pos.y, this.radius, 0, 2 * Math.PI);
-    ctx.closePath();
-    ctx.fillStyle = this.fill;
-    ctx.fill();
+  render(): void {
+    this.ctx.beginPath();
+    this.ctx.arc(this.pos.x, this.pos.y, this.radius, 0, 2 * Math.PI);
+    this.ctx.closePath();
+    this.ctx.fillStyle = this.fill;
+    this.ctx.fill();
   }
 }

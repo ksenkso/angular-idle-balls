@@ -22,7 +22,6 @@ export default class UpgradeStrategy {
   }
 
   set level(value: number) {
-    console.log(value);
     this.$level = value;
     this.value$.next(this.calculate(this.$level));
   }

@@ -96,9 +96,9 @@ export default class BallType {
     this.cost.level = level;
   }
 
-  create(): Ball {
+  create(ctx: CanvasRenderingContext2D): Ball {
     const info = BallType.defaults(this.type);
-    const ball = new Ball({pos: {x: 0, y: 0}, damage: info.damage, fill: info.fill});
+    const ball = new Ball({ctx, pos: {x: 0, y: 0}, damage: info.damage, fill: info.fill});
     this.damage.value$.subscribe(damage => ball.damage = damage);
     return ball;
   }

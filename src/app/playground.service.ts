@@ -27,6 +27,7 @@ export class PlaygroundService extends StorageService<PlaygroundData> {
   public pointsInEnemies: UpgradeStrategy;
   public levelProgress$: BehaviorSubject<number>;
   public sizes: RectSize;
+  public ctx: CanvasRenderingContext2D;
   private levelTotal;
   private levelScore;
 
@@ -121,14 +122,11 @@ export class PlaygroundService extends StorageService<PlaygroundData> {
     const total = this.pointsInEnemies.value$.value * PlaygroundService.enemiesCount;
     if (!this.enemies.length) {
       this.setLevelTotal(total);
-    } else {
-      this.levelTotal = total;
-    }
-    if (!this.enemies.length) {
       for (let i = 0; i < PlaygroundService.enemiesCount; i++) {
         const pos = this.placeBall();
         if (pos) {
           const ball = new EnemyBall({
+            ctx: this.ctx,
             pos,
             points: Math.floor(this.pointsInEnemies.value$.value),
             onDestroy: this.onEnemyDestroy.bind(this),
@@ -138,7 +136,9 @@ export class PlaygroundService extends StorageService<PlaygroundData> {
           break;
         }
       }
+    } else {
+      this.levelTotal = total;
+      this.enemies.forEach(enemy => enemy.ctx = this.ctx);
     }
-
   }
 }

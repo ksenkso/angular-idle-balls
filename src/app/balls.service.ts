@@ -21,7 +21,7 @@ export class BallsService extends StorageService<BallTypeInfo[]> {
     super('balls');
     this.ballTypes
       .filter(ballType => ballType.bought && ballType.type !== BALL_TYPE.Click)
-      .map(ballType => ballType.create())
+      .map(ballType => ballType.create(this.playgroundService.ctx))
       .forEach((ball) => {
         this.balls$.next(this.balls$.value.concat(ball));
       });
@@ -44,7 +44,7 @@ export class BallsService extends StorageService<BallTypeInfo[]> {
   }
 
   addBall(type: BALL_TYPE): void {
-    const ball = this.getBallType(type).create();
+    const ball = this.getBallType(type).create(this.playgroundService.ctx);
     this.balls$.next(this.balls$.value.concat(ball));
   }
 
@@ -68,4 +68,5 @@ export class BallsService extends StorageService<BallTypeInfo[]> {
       this.playgroundService.score$.next(newScore);
     }
   }
+
 }

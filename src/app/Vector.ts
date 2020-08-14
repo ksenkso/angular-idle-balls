@@ -30,8 +30,14 @@ export default class Vector {
     return Vector.scale(Vector.normalize(v), l);
   }
 
-  static scale(v: Vector, n: number): Vector {
+  static scale(v: Point2D, n: number): Vector {
     return new Vector(n * v.x, n * v.y);
+  }
+
+  static setAngle(v: Vector, angle: number): Vector {
+    const l = v.length;
+    const nv = new Vector(Math.cos(angle), Math.sin(angle));
+    return Vector.setLength(nv, l);
   }
 
   static rotate(v: Vector, deg: number): Vector {
@@ -43,7 +49,7 @@ export default class Vector {
     return Vector.scale(nv, nv.length / l);
   }
 
-  static getAngle(v: Vector): number {
+  static getAngle(v: Point2D): number {
     return Math.atan2(v.y, v.x);
   }
 
@@ -56,14 +62,14 @@ export default class Vector {
   }
 
 
-  static add(v1: Vector, v2: Vector): Vector {
+  static add(v1: Point2D, v2: Point2D): Vector {
     return new Vector(
       v1.x + v2.x,
       v1.y + v2.y
     );
   }
 
-  static sub(v1: Vector, v2: Vector): Vector {
+  static sub(v1: Point2D, v2: Point2D): Vector {
     return new Vector(
       v1.x - v2.x,
       v1.y - v2.y
