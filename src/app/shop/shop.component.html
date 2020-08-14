@@ -15,7 +15,6 @@
     <button *ngIf="ballType.bought"
             [disabled]="!ballType.bought || playgroundService.score$.value < ballType.cost.value$.value"
             (mousedown)="initiateUpgrading(ballType.type)"
-            (mouseup)="stopUpgrading()"
             class="button ball__button ball__button_upgrade">
 
       {{ballType.cost.value$.value | formatPoints}}</button>

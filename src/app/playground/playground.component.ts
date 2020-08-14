@@ -3,7 +3,6 @@ import Vector from '../Vector';
 import Ball from '../Ball';
 import {PlaygroundService} from '../playground.service';
 import {BallsService} from '../balls.service';
-import {BALL_TYPE} from '../BallType';
 
 export type RectSize = {
   width: number,
@@ -111,8 +110,8 @@ export class PlaygroundComponent implements AfterViewInit {
     const targetEnemy = this.playgroundService.enemies.find(enemy => enemy.contains(mousePos));
     if (targetEnemy) {
       targetEnemy.emitParticles();
-      this.playgroundService.addScore(Math.min(this.ballsService.getBallType(BALL_TYPE.Click).damage.value$.value, targetEnemy.points));
-      targetEnemy.getDamage(this.ballsService.getBallType(BALL_TYPE.Click).damage.value$.value);
+      this.playgroundService.addScore(Math.min(this.ballsService.getBallType('click').damage.value$.value, targetEnemy.points));
+      targetEnemy.getDamage(this.ballsService.getBallType('click').damage.value$.value);
     }
   }
 

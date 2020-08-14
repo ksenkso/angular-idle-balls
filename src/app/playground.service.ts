@@ -12,6 +12,7 @@ type PlaygroundData = {
   levelScore: number,
   level: number,
   enemies: any[],
+  isPaused: boolean
 };
 
 @Injectable({
@@ -22,7 +23,7 @@ export class PlaygroundService extends StorageService<PlaygroundData> {
   public static shouldNotLoad = false;
   public static shouldNotSave = false;
   public enemies: EnemyBall[];
-  public isPaused$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public isPaused$: BehaviorSubject<boolean>;
   public score$: BehaviorSubject<number>;
   public pointsInEnemies: UpgradeStrategy;
   public levelProgress$: BehaviorSubject<number>;
@@ -42,6 +43,7 @@ export class PlaygroundService extends StorageService<PlaygroundData> {
       level: this.pointsInEnemies.level,
       enemies: this.enemies.map(enemy => enemy.serialize()),
       levelTotal: this.levelTotal,
+      isPaused: this.isPaused$.value,
     };
   }
 
@@ -88,6 +90,7 @@ export class PlaygroundService extends StorageService<PlaygroundData> {
       this.enemies = data.enemies.map(enemy => new EnemyBall({...enemy, onDestroy: this.onEnemyDestroy.bind(this)}));
       this.score$ = new BehaviorSubject<number>(data.score);
       this.pointsInEnemies = new UpgradeStrategy({factor: 1.2, base: 20, level: data.level});
+      this.isPaused$ = new BehaviorSubject<boolean>(data.isPaused);
     } else {
       this.enemies = [];
       this.isPaused$ = new BehaviorSubject<boolean>(false);
@@ -96,6 +99,7 @@ export class PlaygroundService extends StorageService<PlaygroundData> {
       this.levelProgress$ = new BehaviorSubject<number>(0);
       this.levelTotal = Infinity;
       this.levelScore = 0;
+      this.isPaused$ = new BehaviorSubject<boolean>(false);
     }
   }
 

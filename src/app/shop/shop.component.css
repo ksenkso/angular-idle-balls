@@ -1,31 +1,43 @@
 :host {
   grid-area: shop;
+  overflow: hidden;
 }
+
 .shop {
-  padding-top: 12px;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  /*flex-wrap: wrap;*/
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(auto-fit, 170px);
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  overflow-y: scroll;
+  max-height: 100%;
+  padding: 5px;
+  border: 1px solid black;
+  border-radius: 3px
 }
+.shop::-webkit-scrollbar {
+  display: block;
+  width: 5px;
+  border-radius: 2.5px;
+  background-color: #2b2b2b;
+}
+.shop::-webkit-scrollbar-thumb {
+  display: block;
+  border-radius: 2.5px;
+  background-color: black;
+}
+
 .shop__ball {
   color: #eaeaea;
-  border: 1px solid black;
   border-radius: 3px;
-  margin-bottom: 12px;
   padding: 5px 7px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  max-width: 145px;
   width: 100%;
   background-color: #2b2b2b;
-}
-
-.shop__ball:nth-child(odd) {
-  margin-right: 10px;
-}
-.shop__ball:last-child {
-  margin-right: 0;
 }
 
 .ball__button {
@@ -38,8 +50,18 @@
   width: 100%;
 }
 
+.ball__name {
+  text-align: center;
+  height: 2em;
+  margin-bottom: 4px;
+}
+
 .ball__button_upgrade {
   background-image: url(../../assets/upgrade.svg);
+}
+
+.ball__current-damage, .ball__next-damage {
+  height: 1em;
 }
 
 .shop__ball > * {
