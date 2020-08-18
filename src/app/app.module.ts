@@ -7,6 +7,8 @@ import { ControlsComponent } from './controls/controls.component';
 import { ShopComponent } from './shop/shop.component';
 import { FormatPointsPipe } from './format-points.pipe';
 import { ProgressComponent } from './progress/progress.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,8 @@ import { ProgressComponent } from './progress/progress.component';
     ProgressComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]
