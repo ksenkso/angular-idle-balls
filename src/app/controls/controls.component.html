@@ -1,8 +1,8 @@
 <div class="controls">
-  <div class="controls__level">Lvl {{level}}</div>
+  <div class="controls__level">Уровень {{level}}</div>
   <app-progress [progress]="progress"></app-progress>
-  <div class="controls__score">Score: <span class="score__value">{{score | formatPoints}}</span></div>
-  <button class="button controls__button" *ngIf="isPaused" (click)="play()">PLAY</button>
-  <button class="button controls__button" *ngIf="!isPaused" (click)="pause()">PAUSE</button>
-  <button class="button controls__button" (click)="resetGame()">reset</button>
+  <div class="controls__score">Счёт: <span class="score__value">{{score | formatPoints}}</span></div>
+  <button class="button controls__button" *ngIf="isPaused" (click)="play()">Продолжить</button>
+  <button class="button controls__button" *ngIf="!isPaused" (click)="pause()">Пауза</button>
+  <button class="button controls__button" (click)="resetGame()">сброс</button>
 </div>

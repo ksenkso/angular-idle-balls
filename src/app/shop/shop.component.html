@@ -1,9 +1,9 @@
 <div class="shop">
   <div class="shop__ball" *ngFor="let ballType of ballsService.ballTypes">
     <div class="ball__name">{{ballType.name}}</div>
-    <div class="ball__level">Lvl {{ballType.damage.level}}</div>
+    <div class="ball__level">Уровень {{ballType.damage.level}}</div>
     <img src="{{ballType.image}}" alt="" class="ball__image">
-    <div [style.opacity]="ballType.bought ? 1 : 0" class="ball__current-damage">Dmg: {{ballType.damage.value$.value | formatPoints}}</div>
+    <div [style.opacity]="ballType.bought ? 1 : 0" class="ball__current-damage">Урон: {{ballType.damage.value$.value | formatPoints}}</div>
     <button class="button ball__button"
             *ngIf="!ballType.bought"
             (click)="buy(ballType.type)"
@@ -17,7 +17,7 @@
             class="button ball__button ball__button_upgrade">
 
       {{ballType.cost.value$.value | formatPoints}}</button>
-    <div *ngIf="ballType.bought" class="ball__next-damage">Next dmg: {{ballType.damage.next | formatPoints}}</div>
-    <div *ngIf="!ballType.bought" class="ball__current-damage">Dmg: {{ballType.damage.value$.value | formatPoints}}</div>
+    <div *ngIf="ballType.bought" class="ball__next-damage">Урон → {{ballType.damage.next | formatPoints}}</div>
+    <div *ngIf="!ballType.bought" class="ball__current-damage">Урон: {{ballType.damage.value$.value | formatPoints}}</div>
   </div>
 </div>
