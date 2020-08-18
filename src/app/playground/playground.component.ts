@@ -48,7 +48,7 @@ export class PlaygroundComponent implements AfterViewInit {
     // only need to create balls in service, this handles all the positioning
     this.ballsService.balls$.value.forEach(ball => {
       ball.ctx = this.playgroundService.ctx;
-      const pos = this.playgroundService.placeBall(5);
+      const pos = this.playgroundService.placeBall(ball.radius);
       if (pos) {
         ball.pos = new Vector(pos.x, pos.y);
       } else {
@@ -59,7 +59,7 @@ export class PlaygroundComponent implements AfterViewInit {
       if (!balls.length) {
         return;
       }
-      const pos = this.playgroundService.placeBall(5);
+      const pos = this.playgroundService.placeBall(balls[balls.length - 1].radius);
       if (pos) {
         balls[balls.length - 1].pos = new Vector(pos.x, pos.y);
       } else {
@@ -91,6 +91,7 @@ export class PlaygroundComponent implements AfterViewInit {
       for (; i < this.playgroundService.enemies.length; i++) {
         const enemy = this.playgroundService.enemies[i];
         if (b.collideEnemy(enemy)) {
+          b.updateAngleSpeed(Vector.normalize(Vector.sub(enemy.pos, b.pos)));
           this.playgroundService.addScore(Math.min(b.damage, enemy.points));
           enemy.getDamage(b.damage);
           break;

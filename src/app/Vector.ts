@@ -58,7 +58,11 @@ export default class Vector {
   }
 
   static getAngleBetween(v1: Vector, v2: Vector): number {
-    return Math.acos(Vector.dot(v1, v2) / (v1.length * v2.length));
+    return Math.acos(Vector.getCosine(v1, v2));
+  }
+
+  static getCosine(v1: Vector, v2: Vector): number {
+    return Vector.dot(v1, v2) / (v1.length * v2.length);
   }
 
 

@@ -7,7 +7,7 @@
   display: grid;
   /*flex-wrap: wrap;*/
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(auto-fit, 170px);
+  grid-template-rows: repeat(auto-fit, 190px);
   grid-column-gap: 10px;
   grid-row-gap: 10px;
   overflow-y: scroll;
@@ -54,6 +54,10 @@
   text-align: center;
   height: 2em;
   margin-bottom: 4px;
+}
+
+.ball__image {
+  height: 30px;
 }
 
 .ball__button_upgrade {

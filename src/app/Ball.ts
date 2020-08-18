@@ -7,46 +7,65 @@ export type BallConfig = {
   pos?: Point2D,
   fill?: string,
   damage?: number,
+  image?: HTMLImageElement
 };
 export default class Ball {
-  public static speed = 1.5;
-  private velocity: Vector;
+  public static defaultRadius = 7;
+  public static speed = 2;
+  public velocity: Vector;
   public damage: number;
   public pos: Vector;
   public ctx: CanvasRenderingContext2D;
-  public radius = 5;
+  public radius = Ball.defaultRadius;
+  public angle = 0;
+  public angleSpeed = 0.1;
   private readonly fill: string = '#000000';
+  private readonly image: HTMLImageElement;
+  private collides: boolean;
 
-  constructor({ctx, pos = {x: 0, y: 0}, fill = '#000000', damage = 10}: BallConfig) {
+
+  constructor({ctx, pos = {x: 0, y: 0}, fill = '#000000', damage = 10, image}: BallConfig) {
     this.ctx = ctx;
     this.fill = fill;
-    this.radius = 5;
     this.pos = new Vector(pos.x, pos.y);
     this.velocity = Vector.setLength(Vector.randomNormalized(), Ball.speed);
     this.damage = damage;
+    this.image = image;
   }
 
   tick(sizes: RectSize): void {
     this.pos = Vector.add(this.pos, this.velocity);
+    this.angle += this.angleSpeed;
     this.collide(sizes);
   }
 
   collide(sizes: RectSize): void {
     let n = null;
-    if ((this.pos.x - this.radius) < 0) {
+    // left side
+    if ((this.pos.x - this.radius) <= 0) {
       n = new Vector(1, 0);
+      this.updateAngleSpeed(new Vector(-1, 0));
     }
-    if ((this.pos.x + this.radius) > sizes.width) {
+    // right side
+    if ((this.pos.x + this.radius) >= sizes.width) {
       n = new Vector(-1, 0);
+      this.updateAngleSpeed(new Vector(1, 0));
     }
-    if ((this.pos.y + this.radius) > sizes.height) {
+    // bottom side
+    if ((this.pos.y + this.radius) >= sizes.height) {
       n = new Vector(0, -1);
+      this.updateAngleSpeed(new Vector(0, 1));
     }
-    if ((this.pos.y - this.radius) < 0) {
+    // top side
+    if ((this.pos.y - this.radius) <= 0) {
       n = new Vector(0, 1);
+      this.updateAngleSpeed(new Vector(0, -1));
     }
-    if (n) {
+    if (n && !this.collides) {
       this.velocity = Vector.sub(this.velocity, Vector.scale(n, 2 * Vector.dot(this.velocity, n)));
+      this.collides = true;
+    } else {
+      this.collides = false;
     }
   }
 
@@ -68,10 +87,32 @@ export default class Ball {
 
 
   render(): void {
-    this.ctx.beginPath();
-    this.ctx.arc(this.pos.x, this.pos.y, this.radius, 0, 2 * Math.PI);
-    this.ctx.closePath();
-    this.ctx.fillStyle = this.fill;
-    this.ctx.fill();
+    this.ctx.save();
+    this.ctx.translate(this.pos.x, this.pos.y);
+    this.ctx.rotate(this.angle);
+    this.ctx.drawImage(
+      this.image,
+      0, 0,
+      128, 128,
+      -this.radius,
+      -this.radius,
+      2 * this.radius,
+      2 * this.radius);
+    this.ctx.translate(-this.pos.x, -this.pos.y);
+    this.ctx.restore();
+  }
+
+  updateAngleSpeed(posVector: Vector): void {
+    let angle = Vector.getAngleBetween(this.velocity, posVector);
+    const det = this.velocity.x * posVector.y - this.velocity.y * posVector.x;
+    if (det > 0) {
+      angle = -angle;
+    }
+    // extrapolate the angle speed to domain [-0.1; 0.1]
+    let newSpeed = this.angleSpeed + angle / Math.PI / 10;
+    if (Math.abs(newSpeed) > 0.1) {
+      newSpeed = Math.sign(newSpeed) * 0.1;
+    }
+    this.angleSpeed = newSpeed;
   }
 }

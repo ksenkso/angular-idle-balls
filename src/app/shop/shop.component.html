@@ -2,8 +2,7 @@
   <div class="shop__ball" *ngFor="let ballType of ballsService.ballTypes">
     <div class="ball__name">{{ballType.name}}</div>
     <div class="ball__level">Lvl {{ballType.damage.level}}</div>
-    <div class="ball__image">
-    </div>
+    <img src="{{ballType.image}}" alt="" class="ball__image">
     <div [style.opacity]="ballType.bought ? 1 : 0" class="ball__current-damage">Dmg: {{ballType.damage.value$.value | formatPoints}}</div>
     <button class="button ball__button"
             *ngIf="!ballType.bought"

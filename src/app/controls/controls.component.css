@@ -28,5 +28,9 @@
 }
 .controls__button:disabled {
   cursor: not-allowed;
+}
 
+.score__value {
+  width: 64px;
+  display: inline-block;
 }
