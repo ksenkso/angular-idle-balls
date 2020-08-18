@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1597766092049,
+  "timestamp": 1597766380910,
   "index": "/angular-idle-balls/index.html",
   "assetGroups": [
     {
@@ -13,7 +13,7 @@
       "urls": [
         "/angular-idle-balls/favicon.ico",
         "/angular-idle-balls/index.html",
-        "/angular-idle-balls/main.08511d1a3b9868721211.js",
+        "/angular-idle-balls/main.bebab1e528a9034ec59c.js",
         "/angular-idle-balls/manifest.webmanifest",
         "/angular-idle-balls/polyfills.a4021de53358bb0fec14.js",
         "/angular-idle-balls/runtime.e227d1a0e31cbccbf8ec.js",
@@ -111,8 +111,8 @@
     "/angular-idle-balls/assets/upgrade.svg": "38bb38018d09d2717b3fb77432e33561c6784b98",
     "/angular-idle-balls/buy.51834e9885d7a133875e.svg": "ff0831da335e36af8815c69f462496eab9e0014a",
     "/angular-idle-balls/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "/angular-idle-balls/index.html": "d4c97343f5ee20e6a7c19ea2ad6b5f5c416f95d2",
-    "/angular-idle-balls/main.08511d1a3b9868721211.js": "0d512f5779ffb0e4ce0fcc44a1cf94e5de138e7f",
+    "/angular-idle-balls/index.html": "af60ee58928ea5d3a3a4be0e360806b8dce6be51",
+    "/angular-idle-balls/main.bebab1e528a9034ec59c.js": "cc55a1b83b75264551b9dace1593ec7adc6cc010",
     "/angular-idle-balls/manifest.webmanifest": "6c67ec61e681eee10eb8603d625caa42fb60042d",
     "/angular-idle-balls/polyfills.a4021de53358bb0fec14.js": "b47435a9ef2a4829f2f9dfd35599bde3614981b1",
     "/angular-idle-balls/runtime.e227d1a0e31cbccbf8ec.js": "a9aafcf49f49145093fc831efd9b8e2f6c71bb9c",
