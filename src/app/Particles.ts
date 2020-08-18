@@ -9,13 +9,13 @@ export default class Particles {
   private pos: Point2D;
   private tickCount: number;
   private objects: Particle[];
-  private readonly destroyParticles: () => void;
+  public destroyParticles: () => void;
 
-  constructor(enemy: EnemyBall) {
+  constructor(enemy: EnemyBall, destroyParticles: () => void) {
     this.ctx = enemy.ctx;
     this.pos = enemy.pos;
     this.tickCount = 0;
-    this.destroyParticles = enemy.destroyParticles;
+    this.destroyParticles = destroyParticles;
     this.objects = Array(18).fill(0)
       .map((_, i) => new Particle({
         angle: Math.PI * 2 / 18 * i,

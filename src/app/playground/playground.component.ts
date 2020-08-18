@@ -3,6 +3,8 @@ import Vector from '../Vector';
 import Ball from '../Ball';
 import {PlaygroundService} from '../playground.service';
 import {BallsService} from '../balls.service';
+import Particles from '../Particles';
+import EnemyBall from '../EnemyBall';
 
 export type RectSize = {
   width: number,
@@ -20,7 +22,7 @@ export class PlaygroundComponent implements AfterViewInit {
   private rect: ClientRect;
   public isPaused: boolean;
   private useMouseInterval: number;
-  private useMouseTimeout: number;
+  private particles: Particles[] = [];
 
   constructor(
     private playgroundService: PlaygroundService,
@@ -67,7 +69,7 @@ export class PlaygroundComponent implements AfterViewInit {
       }
     });
     this.playgroundService.placeEnemies();
-    this.initClickInteractions();
+    this.initInteractions();
   }
 
   run(): void {
@@ -78,10 +80,11 @@ export class PlaygroundComponent implements AfterViewInit {
   tick(): void {
     this.playgroundService.ctx.clearRect(0, 0, 500, 800);
     // this.ballsService.moveParticles();
+    this.particles.forEach(particles => particles.tick());
     this.playgroundService.enemies.forEach(e => {
-      if (e.particles) {
+      /*if (e.particles) {
         e.particles.tick();
-      }
+      }*/
       e.render();
     });
     this.ballsService.balls$.value.forEach(b => {
@@ -110,10 +113,24 @@ export class PlaygroundComponent implements AfterViewInit {
     const mousePos = this.getMouseCoords(e);
     const targetEnemy = this.playgroundService.enemies.find(enemy => enemy.contains(mousePos));
     if (targetEnemy) {
-      targetEnemy.emitParticles();
+      this.emitParticles(targetEnemy);
       this.playgroundService.addScore(Math.min(this.ballsService.getBallType('click').damage.value$.value, targetEnemy.points));
       targetEnemy.getDamage(this.ballsService.getBallType('click').damage.value$.value);
     }
+  }
+
+  private destroyParticles(target: Particles): void {
+    const index = this.particles.findIndex(p => p === target);
+    if (index !== -1) {
+      this.particles.splice(index, 1);
+    }
+  }
+
+  private emitParticles(enemy: EnemyBall): Particles {
+    const particles = new Particles(enemy, this.destroyParticles.bind(this));
+    this.particles.push(particles);
+    particles.destroyParticles = this.destroyParticles.bind(this, particles);
+    return particles;
   }
 
   private getMouseCoords(e: MouseEvent): { x: number, y: number } {
@@ -123,7 +140,7 @@ export class PlaygroundComponent implements AfterViewInit {
     };
   }
 
-  private initClickInteractions(): void {
+  private initInteractions(): void {
     this.rect = this.canvas.nativeElement.getBoundingClientRect();
     window.addEventListener('resize', () => {
       this.rect = this.canvas.nativeElement.getBoundingClientRect();
@@ -141,16 +158,17 @@ export class PlaygroundComponent implements AfterViewInit {
     });
     this.canvas.nativeElement.addEventListener('mousedown', (e: MouseEvent) => {
       this.useMouseOnEnemy(e);
-      this.useMouseTimeout = setTimeout(() => {
+      this.useMouseInterval = setInterval(this.useMouseOnEnemy.bind(this, e), 1000 / 6);
+      /*this.useMouseTimeout = setTimeout(() => {
         this.useMouseTimeout = null;
         this.useMouseInterval = setInterval(this.useMouseOnEnemy.bind(this, e), 1000 / 6);
-      }, 1100 / 6);
+      }, 1100 / 6);*/
     });
 
     document.addEventListener('mouseup', () => {
-      if (this.useMouseTimeout) {
+      /*if (this.useMouseTimeout) {
         clearTimeout(this.useMouseTimeout);
-      }
+      }*/
       clearInterval(this.useMouseInterval);
     });
   }

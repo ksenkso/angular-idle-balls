@@ -1,5 +1,4 @@
 import Vector, {Point2D} from './Vector';
-import Particles from './Particles';
 import {formatPoints} from './utils';
 
 export type EnemyBallConfig = {
@@ -17,7 +16,6 @@ export default class EnemyBall {
   pos: Vector;
   ctx: CanvasRenderingContext2D;
   points: number;
-  particles: Particles;
   private fill: string;
   private readonly onDestroy: (ball: EnemyBall) => void;
   private readonly initialPoints: number;
@@ -30,7 +28,6 @@ export default class EnemyBall {
     this.points = points;
     this.initialPoints = initialPoints ?? points;
     this.onDestroy = onDestroy;
-    this.destroyParticles = this.destroyParticles.bind(this);
   }
 
   render(): void {
@@ -69,13 +66,5 @@ export default class EnemyBall {
       initialPoints: this.initialPoints,
       fill: this.fill,
     };
-  }
-
-  destroyParticles(): void {
-    this.particles = null;
-  }
-
-  emitParticles(): void {
-    this.particles = new Particles(this);
   }
 }
