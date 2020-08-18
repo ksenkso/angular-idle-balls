@@ -1,0 +1,140 @@
+{
+  "configVersion": 1,
+  "timestamp": 1597765941703,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/favicon.ico",
+        "/index.html",
+        "/main.08511d1a3b9868721211.js",
+        "/manifest.webmanifest",
+        "/polyfills.a4021de53358bb0fec14.js",
+        "/runtime.e227d1a0e31cbccbf8ec.js",
+        "/styles.442ae506211f84845fe3.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/assets/balls/atom.png",
+        "/assets/balls/ball.png",
+        "/assets/balls/baseball.png",
+        "/assets/balls/basketball.png",
+        "/assets/balls/burger.png",
+        "/assets/balls/click.png",
+        "/assets/balls/coin.png",
+        "/assets/balls/cookie.png",
+        "/assets/balls/donut.png",
+        "/assets/balls/earth.png",
+        "/assets/balls/egg.png",
+        "/assets/balls/eye.png",
+        "/assets/balls/football.png",
+        "/assets/balls/jupiter.png",
+        "/assets/balls/maki.png",
+        "/assets/balls/mine.png",
+        "/assets/balls/moon.png",
+        "/assets/balls/orange.png",
+        "/assets/balls/pacman.png",
+        "/assets/balls/radiation.png",
+        "/assets/balls/saturn.png",
+        "/assets/balls/star.png",
+        "/assets/balls/tennis.png",
+        "/assets/balls/vinyl.png",
+        "/assets/balls/watermelon.png",
+        "/assets/balls/wheel.png",
+        "/assets/buy.svg",
+        "/assets/icons/icon-128x128.png",
+        "/assets/icons/icon-144x144.png",
+        "/assets/icons/icon-152x152.png",
+        "/assets/icons/icon-192x192.png",
+        "/assets/icons/icon-384x384.png",
+        "/assets/icons/icon-512x512.png",
+        "/assets/icons/icon-72x72.png",
+        "/assets/icons/icon-96x96.png",
+        "/assets/upgrade.svg",
+        "/buy.51834e9885d7a133875e.svg",
+        "/upgrade.8511a63c0b015716a2f1.svg"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/assets/balls/atom.png": "4041f25adc4639bf3be8cf7c917ada2403a4e6f9",
+    "/assets/balls/ball.png": "44ff14a83499708a952db0a09580ec89e4114b1c",
+    "/assets/balls/baseball.png": "a0350238db8b8923f684aadac898e401ef6c89cf",
+    "/assets/balls/basketball.png": "c0fc35121028e093e17a01a07db41fd9630d9487",
+    "/assets/balls/burger.png": "cbadc41feafb3d24a60056e4769a939580486725",
+    "/assets/balls/click.png": "d843fb9ff32cf5211d68c8062ace0091ddb3172e",
+    "/assets/balls/coin.png": "a485c2b98c2a176d16e42f9be036bb599f8cea46",
+    "/assets/balls/cookie.png": "bd6d2cde2a4c93600ea9357fb0b3f21aca4f6031",
+    "/assets/balls/donut.png": "2db0410d56b5201f093be7c4114a456f90141a94",
+    "/assets/balls/earth.png": "dee94abe5c5ff4dd76c7687bd5284198ac31e96e",
+    "/assets/balls/egg.png": "f34f8403ad173b986ceef046241184c855049b99",
+    "/assets/balls/eye.png": "9dd5c68573f6de0c2e38d733643e63a51d653ca2",
+    "/assets/balls/football.png": "04f4ce6fc7270bbeda9bdff591500f665bf9dbfb",
+    "/assets/balls/jupiter.png": "edb9e392e75989ac32f5b033e544955a851b44ae",
+    "/assets/balls/maki.png": "3ef7e2a40b1e80c8e0937f8335a868d9cb867dda",
+    "/assets/balls/mine.png": "62af2129924033480d50bb6fb49dedf6bdce183a",
+    "/assets/balls/moon.png": "2710e31951505f2095367aaede6bee721e9c20c0",
+    "/assets/balls/orange.png": "349d32b4c4a5d39821fa5591865998d8f3e69dd5",
+    "/assets/balls/pacman.png": "9b5b9a9cc474561223dafd5cbd0f4cfd2875d335",
+    "/assets/balls/radiation.png": "68599b8107390426ec6ff3ee3ad1f34d4bfdfacc",
+    "/assets/balls/saturn.png": "8cc6ee1c7322bd56da1613c5073980fdeda13b49",
+    "/assets/balls/star.png": "468d9977e5286294f672da7598bb127e0fe66ecc",
+    "/assets/balls/tennis.png": "1485ca1e8edc3dee2f20ec824d9b7956a465fb5f",
+    "/assets/balls/vinyl.png": "e2e8f4701be1bc4b53500b300ed72a758773fa45",
+    "/assets/balls/watermelon.png": "c7b55c4791ff252389e023110397868afec67aa7",
+    "/assets/balls/wheel.png": "eb6eeb56dbf897cb54ab0578a7fee7bf7c354c2b",
+    "/assets/buy.svg": "ff0831da335e36af8815c69f462496eab9e0014a",
+    "/assets/icons/icon-128x128.png": "dae3b6ed49bdaf4327b92531d4b5b4a5d30c7532",
+    "/assets/icons/icon-144x144.png": "b0bd89982e08f9bd2b642928f5391915b74799a7",
+    "/assets/icons/icon-152x152.png": "7479a9477815dfd9668d60f8b3b2fba709b91310",
+    "/assets/icons/icon-192x192.png": "1abd80d431a237a853ce38147d8c63752f10933b",
+    "/assets/icons/icon-384x384.png": "329749cd6393768d3131ed6304c136b1ca05f2fd",
+    "/assets/icons/icon-512x512.png": "559d9c4318b45a1f2b10596bbb4c960fe521dbcc",
+    "/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
+    "/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
+    "/assets/upgrade.svg": "38bb38018d09d2717b3fb77432e33561c6784b98",
+    "/buy.51834e9885d7a133875e.svg": "ff0831da335e36af8815c69f462496eab9e0014a",
+    "/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
+    "/index.html": "8fa44a473016ce0c6d57813844ee5ee2c0c61d81",
+    "/main.08511d1a3b9868721211.js": "0d512f5779ffb0e4ce0fcc44a1cf94e5de138e7f",
+    "/manifest.webmanifest": "6c67ec61e681eee10eb8603d625caa42fb60042d",
+    "/polyfills.a4021de53358bb0fec14.js": "b47435a9ef2a4829f2f9dfd35599bde3614981b1",
+    "/runtime.e227d1a0e31cbccbf8ec.js": "a9aafcf49f49145093fc831efd9b8e2f6c71bb9c",
+    "/styles.442ae506211f84845fe3.css": "803a1f3de6d81ac82b6993d60a95f91b662464c8",
+    "/upgrade.8511a63c0b015716a2f1.svg": "38bb38018d09d2717b3fb77432e33561c6784b98"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ]
+}
