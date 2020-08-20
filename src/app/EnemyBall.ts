@@ -16,6 +16,7 @@ export default class EnemyBall {
   pos: Vector;
   ctx: CanvasRenderingContext2D;
   points: number;
+  isPressed = false;
   private fill: string;
   private readonly onDestroy: (ball: EnemyBall) => void;
   private readonly initialPoints: number;

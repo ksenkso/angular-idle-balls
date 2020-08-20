@@ -113,6 +113,7 @@ export class PlaygroundComponent implements AfterViewInit {
     const mousePos = this.getMouseCoords(e);
     const targetEnemy = this.playgroundService.enemies.find(enemy => enemy.contains(mousePos));
     if (targetEnemy) {
+      targetEnemy.isPressed = true;
       this.emitParticles(targetEnemy);
       this.playgroundService.addScore(Math.min(this.ballsService.getBallType('click').damage.value$.value, targetEnemy.points));
       targetEnemy.getDamage(this.ballsService.getBallType('click').damage.value$.value);
@@ -170,6 +171,10 @@ export class PlaygroundComponent implements AfterViewInit {
         clearTimeout(this.useMouseTimeout);
       }*/
       clearInterval(this.useMouseInterval);
+      const pressed = this.playgroundService.enemies.find(enemy => enemy.isPressed);
+      if (pressed) {
+        pressed.isPressed = false;
+      }
     });
   }
 }

@@ -75,7 +75,9 @@ export class PlaygroundService extends StorageService<PlaygroundData> {
   onEnemyDestroy(ball: EnemyBall): void {
     const index = this.enemies.findIndex(e => e === ball);
     this.enemies.splice(index, 1);
-    this.ctx.canvas.style.cursor = 'default';
+    if (ball.isPressed) {
+      this.ctx.canvas.style.cursor = 'default';
+    }
     if (!this.enemies.length) {
       setTimeout(() => {
         this.nextLevel();
