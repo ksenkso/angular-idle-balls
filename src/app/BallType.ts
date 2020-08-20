@@ -5,7 +5,7 @@ export type BallTypeInfo = {
   damage?: number,
   image?: string,
   cost?: number,
-  name: string,
+  name?: string,
   level?: number,
   fill?: string,
   bought?: boolean,
@@ -214,10 +214,10 @@ export default class BallType {
   constructor(config: BallTypeInfo) {
     const defaults = BallType.defaults(config.type);
     this.image = defaults.image;
+    this.name = defaults.name;
     this.type = config.type;
     this.damage = new UpgradeStrategy({value: config.damage, base: defaults.damage, factor: 1.1, level: config.level});
     this.cost = new UpgradeStrategy(({value: config.cost, base: defaults.cost, factor: 1.15, level: config.level}));
-    this.name = config.name;
     this.bought = config.bought;
   }
 
@@ -253,7 +253,6 @@ export default class BallType {
       bought: this.bought,
       cost: this.cost.value$.value,
       damage: this.damage.value$.value,
-      name: this.name,
       level: this.cost.level,
       type: this.type
     };
