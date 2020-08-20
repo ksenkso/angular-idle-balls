@@ -11,7 +11,7 @@ export type BallConfig = {
 };
 export default class Ball {
   public static defaultRadius = 7;
-  public static speed = 4;
+  public static speed = 3;
   public velocity: Vector;
   public damage: number;
   public pos: Vector;

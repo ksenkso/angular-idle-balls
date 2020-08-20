@@ -10,7 +10,6 @@ import {PlaygroundService} from '../playground.service';
 })
 export class ShopComponent {
   ballTypes: BallType[] = [];
-  private upgradeTimeout: number;
   private upgradeInterval: number;
 
   constructor(
@@ -23,10 +22,7 @@ export class ShopComponent {
 
   initiateUpgrading(type: string): void {
     this.upgrade(type);
-    this.upgradeTimeout = setTimeout(() => {
-      this.upgradeTimeout = null;
-      this.upgradeInterval = setInterval(this.upgrade.bind(this, type), 1000 / 6);
-    }, 1100 / 6);
+    this.upgradeInterval = setInterval(this.upgrade.bind(this, type), 100);
   }
 
   buy(type: string): void {
@@ -40,7 +36,6 @@ export class ShopComponent {
   }
 
   stopUpgrading(): void {
-    clearTimeout(this.upgradeTimeout);
     clearInterval(this.upgradeInterval);
   }
 }
