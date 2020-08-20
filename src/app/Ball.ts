@@ -11,7 +11,7 @@ export type BallConfig = {
 };
 export default class Ball {
   public static defaultRadius = 7;
-  public static speed = 2;
+  public static speed = 4;
   public velocity: Vector;
   public damage: number;
   public pos: Vector;
@@ -21,7 +21,7 @@ export default class Ball {
   public angleSpeed = 0.1;
   private readonly fill: string = '#000000';
   private readonly image: HTMLImageElement;
-  private collides: boolean;
+  private collides = false;
 
 
   constructor({ctx, pos = {x: 0, y: 0}, fill = '#000000', damage = 10, image}: BallConfig) {
@@ -35,37 +35,46 @@ export default class Ball {
 
   tick(sizes: RectSize): void {
     this.pos = Vector.add(this.pos, this.velocity);
+    // clamp position
+    this.pos.x = this.pos.x - this.radius <= 0
+      ? this.radius + 1
+      : this.pos.x + this.radius >= sizes.width
+        ? sizes.width - this.radius - 1
+        : this.pos.x;
+    this.pos.y = this.pos.y - this.radius <= 0
+      ? this.radius + 1
+      : this.pos.y + this.radius >= sizes.height
+        ? sizes.height - this.radius - 1
+        : this.pos.y;
     this.angle += this.angleSpeed;
     this.collide(sizes);
   }
 
   collide(sizes: RectSize): void {
-    let n = null;
-    // left side
-    if ((this.pos.x - this.radius) <= 0) {
-      n = new Vector(1, 0);
+    const normals = [];
+    if ((this.pos.x - this.radius) <= 1) {
+      normals.push(new Vector(1, 0));
       this.updateAngleSpeed(new Vector(-1, 0));
     }
     // right side
-    if ((this.pos.x + this.radius) >= sizes.width) {
-      n = new Vector(-1, 0);
+    if ((this.pos.x + this.radius) >= sizes.width - 1) {
+      normals.push(new Vector(-1, 0));
       this.updateAngleSpeed(new Vector(1, 0));
     }
     // bottom side
-    if ((this.pos.y + this.radius) >= sizes.height) {
-      n = new Vector(0, -1);
+    if ((this.pos.y + this.radius) >= sizes.height - 1) {
+      normals.push(new Vector(0, -1));
       this.updateAngleSpeed(new Vector(0, 1));
     }
     // top side
-    if ((this.pos.y - this.radius) <= 0) {
-      n = new Vector(0, 1);
+    if ((this.pos.y - this.radius) <= 1) {
+      normals.push(new Vector(0, 1));
       this.updateAngleSpeed(new Vector(0, -1));
     }
-    if (n && !this.collides) {
-      this.velocity = Vector.sub(this.velocity, Vector.scale(n, 2 * Vector.dot(this.velocity, n)));
+    if (normals.length) {
+      const resultNormal = Vector.normalize(normals.reduce((acc, normal) => Vector.add(acc, normal)));
+      this.velocity = Vector.sub(this.velocity, Vector.scale(resultNormal, 2 * Vector.dot(this.velocity, resultNormal)));
       this.collides = true;
-    } else {
-      this.collides = false;
     }
   }
 
