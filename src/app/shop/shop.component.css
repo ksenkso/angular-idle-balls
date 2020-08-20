@@ -22,10 +22,15 @@
   border-radius: 2.5px;
   background-color: #2b2b2b;
 }
+/*.shop::-webkit-scrollbar-button {
+  display: block;
+  background-color: black;
+  height: 1px;
+}*/
 .shop::-webkit-scrollbar-thumb {
   display: block;
   border-radius: 2.5px;
-  background-color: black;
+  background-color: #ffb728;
 }
 
 .shop__ball {
