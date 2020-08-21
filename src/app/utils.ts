@@ -18,5 +18,5 @@ export function formatPoints(points: number): string {
     letter = 'E';
   }
   const maximumFractionDigits = num.toString().length >= 2 ? 1 : 2;
-  return num.toLocaleString('en-US', {maximumFractionDigits}) + letter;
+  return num.toLocaleString('en-US', {maximumFractionDigits}).replace(/,/g, '') + letter;
 }
