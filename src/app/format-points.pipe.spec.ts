@@ -1,6 +1,6 @@
 import {FormatPointsPipe} from './format-points.pipe';
 
-fdescribe('FormatPointsPipe', () => {
+describe('FormatPointsPipe', () => {
   let pipe: FormatPointsPipe;
   beforeEach(() => {
     pipe = new FormatPointsPipe();

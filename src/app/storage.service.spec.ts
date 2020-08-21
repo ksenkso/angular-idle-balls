@@ -11,13 +11,18 @@ class ServiceUsingStorage extends StorageService<any> {
 
 describe('StorageService', () => {
   let service: ServiceUsingStorage;
-
   beforeEach(() => {
     TestBed.configureTestingModule({});
+    spyOn(ServiceUsingStorage.prototype, 'bindStore').and.callThrough();
     service = new ServiceUsingStorage();
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('should call #bindStore when created', () => {
+    expect(service.bindStore).toBeDefined();
+    expect(ServiceUsingStorage.prototype.bindStore).toHaveBeenCalled();
   });
 });
