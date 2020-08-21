@@ -6,6 +6,7 @@ import {environment} from '../environments/environment';
 })
 export abstract class StorageService<T> {
   protected key: string;
+
   protected constructor(key: string) {
     this.key = `${key}/${environment.version}`;
     this.store = this.store.bind(this);
@@ -17,23 +18,30 @@ export abstract class StorageService<T> {
 
   protected abstract init(data: T): any;
 
-  store(): T {
-    return {} as T;
-  }
+  public abstract store(): T;
 
-  bindStore(): void {
+  protected bindStore(): void {
     window.addEventListener('beforeunload', () => {
       // @ts-ignore
       if (!this.__proto__.constructor.shouldNotSave) {
-        localStorage.setItem(this.key, JSON.stringify(this.store()));
+        this.saveToStorage();
       }
     });
+  }
+
+  protected saveToStorage(): void {
+    localStorage.setItem(this.key, JSON.stringify(this.store()));
   }
 
   load(): T | null {
     // @ts-ignore
     if (!this.__proto__.constructor.shouldNotLoad) {
-      return JSON.parse(localStorage.getItem(this.key));
+      const data = localStorage.getItem(this.key);
+      if (data) {
+        return JSON.parse(data);
+      } else {
+        return null;
+      }
     }
   }
 }
