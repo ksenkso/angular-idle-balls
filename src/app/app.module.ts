@@ -9,6 +9,7 @@ import { FormatPointsPipe } from './format-points.pipe';
 import { ProgressComponent } from './progress/progress.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { PointsPipe } from './points.pipe';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { environment } from '../environments/environment';
     ControlsComponent,
     ShopComponent,
     FormatPointsPipe,
-    ProgressComponent
+    ProgressComponent,
+    PointsPipe
   ],
   imports: [
     BrowserModule,

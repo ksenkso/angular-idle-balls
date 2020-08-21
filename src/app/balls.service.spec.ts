@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { BallsService } from './balls.service';
+import {BallsService} from './balls.service';
 
 describe('BallsService', () => {
   let service: BallsService;
@@ -12,5 +12,9 @@ describe('BallsService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('should load balls data from localStorage', () => {
+    expect(service.balls$.value).toEqual([]);
   });
 });
