@@ -5,7 +5,7 @@ export type EnemyBallConfig = {
   pos: Point2D,
   fill?: string,
   points: number,
-  onDestroy: (ball: EnemyBall) => void,
+  onDestroy?: (ball: EnemyBall) => void,
   initialPoints?: number,
   ctx?: CanvasRenderingContext2D,
 };
@@ -60,7 +60,7 @@ export default class EnemyBall {
     return Math.hypot(this.pos.x - point.x, this.pos.y - point.y) < EnemyBall.radius;
   }
 
-  serialize(): object {
+  serialize(): EnemyBallConfig {
     return {
       pos: this.pos,
       points: this.points,

@@ -1,17 +1,17 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import UpgradeStrategy from './UpgradeStrategy';
-import EnemyBall from './EnemyBall';
+import EnemyBall, {EnemyBallConfig} from './EnemyBall';
 import {StorageService} from './storage.service';
 import {Point2D} from './Vector';
 import {RectSize} from './playground/playground.component';
 
-type PlaygroundData = {
+export type PlaygroundData = {
   levelTotal: number;
   score: number,
   levelScore: number,
   level: number,
-  enemies: any[],
+  enemies: EnemyBallConfig[],
   isPaused: boolean
 };
 
