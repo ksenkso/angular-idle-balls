@@ -23,7 +23,8 @@ export default class UpgradeStrategy {
 
   set level(value: number) {
     this.$level = value;
-    this.value$.next(this.calculate(this.$level));
+    const newValue = this.calculate(this.$level);
+    this.value$.next(Math.max(newValue, this.value$.value + 1));
   }
 
   constructor({value, factor = 1.1, level = 1, base = value}: UpgradeStrategyConfig) {
@@ -37,7 +38,7 @@ export default class UpgradeStrategy {
   }
 
   calculate(level: number): number {
-    return Math.max(Math.round(this.base * this.factor ** (level - 1)), this.value$ ? this.value$.value + 1 : 0);
+    return Math.round(this.base * this.factor ** (level - 1));
   }
 
   upgrade(level?: number): void {
