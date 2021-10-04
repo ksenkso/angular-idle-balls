@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ControlsComponent } from './controls.component';
 import {FormatPointsPipe} from '../format-points.pipe';
@@ -7,7 +7,7 @@ describe('ControlsComponent', () => {
   let component: ControlsComponent;
   let fixture: ComponentFixture<ControlsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ControlsComponent, FormatPointsPipe ]
     })
