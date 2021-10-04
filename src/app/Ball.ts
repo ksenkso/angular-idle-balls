@@ -1,4 +1,4 @@
-import EnemyBall from './EnemyBall.js';
+import EnemyBall from './EnemyBall';
 import Vector, {Point2D} from './Vector';
 import {RectSize} from './playground/playground.component';
 
