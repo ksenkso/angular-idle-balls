@@ -1,15 +1,14 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
-import { AppComponent } from './app.component';
-import { PlaygroundComponent } from './playground/playground.component';
-import { ControlsComponent } from './controls/controls.component';
-import { ShopComponent } from './shop/shop.component';
-import { FormatPointsPipe } from './format-points.pipe';
-import { ProgressComponent } from './progress/progress.component';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
-import { PointsPipe } from './points.pipe';
+import {AppComponent} from './app.component';
+import {PlaygroundComponent} from './playground/playground.component';
+import {ControlsComponent} from './controls/controls.component';
+import {ShopComponent} from './shop/shop.component';
+import {FormatPointsPipe} from './format-points.pipe';
+import {ProgressComponent} from './progress/progress.component';
+import {ServiceWorkerModule} from '@angular/service-worker';
+import {environment} from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -19,7 +18,6 @@ import { PointsPipe } from './points.pipe';
     ShopComponent,
     FormatPointsPipe,
     ProgressComponent,
-    PointsPipe
   ],
   imports: [
     BrowserModule,
