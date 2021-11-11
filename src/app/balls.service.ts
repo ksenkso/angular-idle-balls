@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import Ball from './Ball';
+import OldBall from './OldBall';
 import BallType, {BallTypeInfo} from './BallType';
 import {PlaygroundService} from './playground.service';
 import {StorageService} from './storage.service';
@@ -12,7 +12,7 @@ import {StorageService} from './storage.service';
 export class BallsService extends StorageService<BallTypeInfo[]> {
   public static shouldNotSave = false;
   public static shouldNotLoad = false;
-  public balls$: BehaviorSubject<Ball[]> = new BehaviorSubject<Ball[]>([]);
+  public balls$: BehaviorSubject<OldBall[]> = new BehaviorSubject<OldBall[]>([]);
   public ballTypes: BallType[];
 
   constructor(

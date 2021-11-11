@@ -1,5 +1,5 @@
 import UpgradeStrategy from './UpgradeStrategy';
-import Ball from './Ball';
+import OldBall from './OldBall';
 
 export type BallTypeInfo = {
   damage?: number,
@@ -235,11 +235,11 @@ export default class BallType {
     this.cost.level = level;
   }
 
-  create(ctx: CanvasRenderingContext2D): Ball {
+  create(ctx: CanvasRenderingContext2D): OldBall {
     const info = BallType.defaults(this.type);
     const image = new Image();
     image.src = info.image;
-    const ball = new Ball({ctx, pos: {x: 0, y: 0}, damage: info.damage, fill: info.fill, image});
+    const ball = new OldBall({ctx, pos: {x: 0, y: 0}, damage: info.damage, fill: info.fill, image});
     this.damage.value$.subscribe(damage => ball.damage = damage);
     return ball;
   }

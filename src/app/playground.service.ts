@@ -4,7 +4,7 @@ import UpgradeStrategy from './UpgradeStrategy';
 import EnemyBall, {EnemyBallConfig} from './EnemyBall';
 import {StorageService} from './storage.service';
 import {Point2D} from './Vector';
-import {RectSize} from './playground/playground.component';
+import {RectSize} from './playground/RectSize';
 
 export type PlaygroundData = {
   levelTotal: number;

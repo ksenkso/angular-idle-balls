@@ -1,15 +1,11 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, ViewChild} from '@angular/core';
+import * as PIXI from 'pixi.js';
+import {IEnemyData} from './IEnemy';
+import {Enemy} from './Enemy';
+import {Ball, IBallType} from '../OldBall';
 import Vector from '../Vector';
-import Ball from '../Ball';
-import {PlaygroundService} from '../playground.service';
-import {BallsService} from '../balls.service';
-import Particles from '../Particles';
-import EnemyBall from '../EnemyBall';
-
-export type RectSize = {
-  width: number,
-  height: number
-};
+import {randomPoint} from '../utils';
+import {RectSize} from './RectSize';
 
 @Component({
   selector: 'app-playground',
@@ -17,164 +13,76 @@ export type RectSize = {
   styleUrls: ['./playground.component.css']
 })
 export class PlaygroundComponent implements AfterViewInit {
+  private _stage: PIXI.Container;
+  private _app: PIXI.Application;
+  private _ballsData: IBallType[] = [
+    {
+      damage: 10,
+      spriteUrl: '/assets/balls/football.png'
+    }
+  ];
+  private _enemiesData: IEnemyData[] = Array(20).fill(0).map((_, i) => {
+    return {
+      position: { x: 50 + 80 * (i % 4), y: 100 + 80 * (i % 5)},
+      points: 100,
+      totalPoints: 100,
+    };
+  });
+  private _enemies: Enemy[] = [];
+  private _balls: Ball[] = [];
+  private _pointer: Ball = new Ball({
+    spriteUrl: '/assets/balls/click.png',
+    damage: 10,
+  })
+  public isPaused = false;
 
-  private raq: number;
-  private rect: ClientRect;
-  public isPaused: boolean;
-  private useMouseInterval: number;
-  private particles: Particles[] = [];
-
-  constructor(
-    private playgroundService: PlaygroundService,
-    private ballsService: BallsService,
-  ) {
-
-    this.playgroundService.isPaused$.subscribe(isPaused => {
-      if (isPaused) {
-        this.pause();
-      } else {
-        this.run();
-      }
-    });
-
-  }
-
-  @ViewChild('canvas', {read: ElementRef}) canvas: ElementRef;
+  @Input() private width: number;
+  @Input() private height: number;
+  @ViewChild('canvasContainer') canvasContainer: ElementRef<HTMLElement>;
+  private _sizes: RectSize;
 
   ngAfterViewInit(): void {
-    this.playgroundService.ctx = this.canvas.nativeElement.getContext('2d');
-    this.playgroundService.sizes = {
-      width: this.canvas.nativeElement.width,
-      height: this.canvas.nativeElement.height,
-    };
-    // only need to create balls in service, this handles all the positioning
-    this.ballsService.balls$.value.forEach(ball => {
-      ball.ctx = this.playgroundService.ctx;
-      const pos = this.playgroundService.placeBall(ball.radius);
-      if (pos) {
-        ball.pos = new Vector(pos.x, pos.y);
-      } else {
-        throw new Error('NO PLACE!!!');
-      }
+    this._app = new PIXI.Application({
+      width: this.width,
+      height: this.height,
+      antialias: true,
     });
-    this.ballsService.balls$.subscribe((balls: Ball[]) => {
-      if (!balls.length) {
-        return;
-      }
-      const pos = this.playgroundService.placeBall(balls[balls.length - 1].radius);
-      if (pos) {
-        balls[balls.length - 1].pos = new Vector(pos.x, pos.y);
-      } else {
-        throw new Error('NO PLACE!!!');
-      }
+    console.log(this._enemiesData);
+    this._sizes = { width: this.width, height: this.height };
+    this.canvasContainer.nativeElement.appendChild(this._app.view);
+    this._stage = this._app.stage;
+    this._ballsData.forEach((ballType) => {
+      const ball = new Ball(ballType);
+      this._placeBall(ball);
+      console.log(ball);
+      this._balls.push(ball);
+      this._stage.addChild(ball);
     });
-    this.playgroundService.placeEnemies();
-    this.initInteractions();
-  }
-
-  run(): void {
-    this.isPaused = false;
-    requestAnimationFrame(this.tick.bind(this));
-  }
-
-  tick(): void {
-    this.playgroundService.ctx.clearRect(0, 0, 500, 800);
-    // this.ballsService.moveParticles();
-    this.particles.forEach(particles => particles.tick());
-    this.playgroundService.enemies.forEach(e => {
-      /*if (e.particles) {
-        e.particles.tick();
-      }*/
-      e.render();
+    this._enemiesData.forEach((enemyData) => {
+      const enemy = new Enemy(enemyData);
+      enemy.on('pointerdown', () => {
+        enemy.takeDamage(this._pointer);
+      });
+      this._enemies.push(enemy);
+      this._stage.addChild(enemy);
+      this._stage.addChild(enemy);
     });
-    this.ballsService.balls$.value.forEach(b => {
-      b.render();
-      b.tick(this.playgroundService.sizes);
-      let i = 0;
-      for (; i < this.playgroundService.enemies.length; i++) {
-        const enemy = this.playgroundService.enemies[i];
-        if (b.collideEnemy(enemy)) {
-          b.updateAngleSpeed(Vector.normalize(Vector.sub(enemy.pos, b.pos)));
-          this.playgroundService.addScore(Math.min(b.damage, enemy.points));
-          enemy.getDamage(b.damage);
-          break;
+    this._app.ticker.add(() => {
+      this._balls.forEach(ball => {
+        ball.stepInCurrentDirection();
+        const collidingEnemy = this._enemies.find(enemy => ball.collidesCircle(enemy));
+        if (collidingEnemy) {
+          collidingEnemy.takeDamage(ball);
+          ball.reboundFromEnemy(collidingEnemy.getDimensions());
+        } else {
+          ball.collidePlayground(this._sizes);
         }
-      }
+      });
     });
-    this.raq = requestAnimationFrame(this.tick.bind(this));
   }
 
-  pause(): void {
-    this.isPaused = true;
-    cancelAnimationFrame(this.raq);
-  }
-
-  private useMouseOnEnemy(e: MouseEvent): void {
-    const mousePos = this.getMouseCoords(e);
-    const targetEnemy = this.playgroundService.enemies.find(enemy => enemy.contains(mousePos));
-    if (targetEnemy) {
-      targetEnemy.isPressed = true;
-      this.emitParticles(targetEnemy);
-      this.playgroundService.addScore(Math.min(this.ballsService.getBallType('click').damage.value$.value, targetEnemy.points));
-      targetEnemy.getDamage(this.ballsService.getBallType('click').damage.value$.value);
-    }
-  }
-
-  private destroyParticles(target: Particles): void {
-    const index = this.particles.findIndex(p => p === target);
-    if (index !== -1) {
-      this.particles.splice(index, 1);
-    }
-  }
-
-  private emitParticles(enemy: EnemyBall): Particles {
-    const particles = new Particles(enemy, this.destroyParticles.bind(this));
-    this.particles.push(particles);
-    particles.destroyParticles = this.destroyParticles.bind(this, particles);
-    return particles;
-  }
-
-  private getMouseCoords(e: MouseEvent): { x: number, y: number } {
-    return {
-      x: e.clientX - this.rect.left,
-      y: e.clientY - this.rect.top
-    };
-  }
-
-  private initInteractions(): void {
-    this.rect = this.canvas.nativeElement.getBoundingClientRect();
-    window.addEventListener('resize', () => {
-      this.rect = this.canvas.nativeElement.getBoundingClientRect();
-    });
-    this.canvas.nativeElement.addEventListener('mousemove', (e: MouseEvent) => {
-      const mousePos = {
-        x: e.clientX - this.rect.left,
-        y: e.clientY - this.rect.top
-      };
-      if (this.playgroundService.enemies.some(enemy => enemy.contains(mousePos))) {
-        this.canvas.nativeElement.style.cursor = 'pointer';
-      } else {
-        this.canvas.nativeElement.style.cursor = 'default';
-      }
-    });
-    this.canvas.nativeElement.addEventListener('mousedown', (e: MouseEvent) => {
-      this.useMouseOnEnemy(e);
-      this.useMouseInterval = setInterval(this.useMouseOnEnemy.bind(this, e), 1000 / 6);
-      /*this.useMouseTimeout = setTimeout(() => {
-        this.useMouseTimeout = null;
-        this.useMouseInterval = setInterval(this.useMouseOnEnemy.bind(this, e), 1000 / 6);
-      }, 1100 / 6);*/
-    });
-
-    document.addEventListener('mouseup', () => {
-      /*if (this.useMouseTimeout) {
-        clearTimeout(this.useMouseTimeout);
-      }*/
-      clearInterval(this.useMouseInterval);
-      const pressed = this.playgroundService.enemies.find(enemy => enemy.isPressed);
-      if (pressed) {
-        pressed.isPressed = false;
-      }
-    });
+  private _placeBall(ball: Ball) {
+    ball.setPosition(randomPoint(this.width, this.height));
+    ball.setVelocity(Vector.scale(Vector.randomNormalized(), 3));
   }
 }

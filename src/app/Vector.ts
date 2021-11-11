@@ -7,6 +7,7 @@ export default class Vector {
 
   public x: number;
   public y: number;
+  public static zero = new Vector(0, 0);
 
   get length(): number {
     return Math.hypot(this.x, this.y);
